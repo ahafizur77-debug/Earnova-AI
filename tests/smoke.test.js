@@ -48,3 +48,15 @@ test('responsive styling and PWA manifest remain available', () => {
   assert.equal(manifest.name, 'Earnova Community');
   assert.equal(manifest.display, 'standalone');
 });
+
+test('admin security foundation denies client-side role grants', () => {
+  const sql = read('supabase/migrations/202610200001_core_security.sql');
+  assert.ok(sql.includes('enable row level security'), 'RLS must be enabled');
+  assert.ok(sql.includes('user_roles_select_self_or_admin'), 'Role reads must be scoped');
+  assert.ok(!/create policy[^;]+on public\\.user_roles for (insert|update|delete)/is.test(sql),
+    'Clients must not receive role-grant or role-edit policies');
+  assert.ok(sql.includes("public.has_earnova_role('admin')"), 'Admin data must require an admin role');
+  const doc = read('docs/ADMIN_SECURITY.md');
+  assert.ok(doc.includes('No public admin signup'), 'Admin bootstrap restrictions must be documented');
+  assert.ok(doc.includes('Secrets never live in Git'), 'Secret handling rules must be documented');
+});
