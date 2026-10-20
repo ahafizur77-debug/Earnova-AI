@@ -11,6 +11,11 @@ Earnova is an early-stage community/social platform concept for sharing progress
 - Topic tags, search, accessibility labels, keyboard shortcut (Ctrl/Cmd + K)
 - PWA manifest and app icon
 
+## Theme engine
+- App-wide light/dark/automatic appearance with sunrise/sunset calculation based on location after explicit permission; configurable fallback sunrise/sunset times.
+- Accent color presets and a separate appearance per preview conversation.
+- Preferences are stored locally in the current browser. Cross-device sync remains pending real authentication, a database, and authorized preference APIs; the UI states this limitation clearly.
+
 ## Demo limitations
 This is a **front-end prototype**, not a production multi-user social network. Sample profiles, job cards, messages, story circles, and trend counts are illustrative. Posts and interactions are stored locally in the current browser where supported; they are not synced to other people or devices. There is no real authentication, server-side database, upload pipeline, live messaging, AI model integration, payments, moderation dashboard, or verified job feed yet. Do not treat sample vacancies as real opportunities.
 
