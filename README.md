@@ -22,5 +22,9 @@ This is a **front-end prototype**, not a production multi-user social network. S
 5. Add privacy controls, data export/deletion, rate limits, audit logging, security tests, backups, and monitoring.
 6. Add AI features only through server-side endpoints with rate limits, consent, and cost controls.
 
+## Product roadmap
+
+The priority-wise product plan and testable acceptance criteria—including sunrise/sunset automatic themes, separate appearance per chat, and signed-in cross-device theme sync—are documented in [docs/IMPLEMENTATION_ROADMAP.md](docs/IMPLEMENTATION_ROADMAP.md). This is a roadmap; these theme capabilities are not claimed to be implemented yet. Preserve existing prototype features while delivering each milestone.
+
 ## Deploy
 The static preview is deployed separately from MoneyMind AI using Render Static Sites. Root directory is the repository root and publish path is `.`. No build command is required.
