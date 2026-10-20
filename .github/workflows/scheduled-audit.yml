@@ -1,0 +1,38 @@
+name: Scheduled quality audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 4 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scheduled-quality-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Run regression checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run dependency-free smoke tests
+        run: node --test tests/smoke.test.js
+      - name: Check JavaScript syntax
+        run: |
+          node --check app.js
+          node --check theme.js
+      - name: Confirm no tracked .env files
+        run: |
+          if git ls-files | grep -E '(^|/)\.env($|\.)' | grep -vE '(^|/)\.env\.example$'; then
+            echo 'Potential environment secret file is tracked. Review immediately.'
+            exit 1
+          fi
