@@ -18,7 +18,7 @@
 <header class="topbar">
   <a class="brand" href="#" data-view="home" aria-label="Earnova home"><span class="brand-mark">e<span>✳</span></span><span>earnova</span></a>
   <label class="top-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.2 4.2"/></svg><input id="globalSearch" placeholder="Search people, skills, posts..." autocomplete="off"><kbd>⌘ K</kbd></label>
-  <div class="top-actions"><button class="icon-button" data-action="messages" aria-label="Messages"><svg viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5 8 8 0 0 1-3.4-.8L4 20l1.5-4A7.5 7.5 0 1 1 20 11.5Z"/></svg><i class="unread-dot"></i></button><button class="icon-button" data-action="notifications" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button><button class="profile-mini" data-view="profile" aria-label="Open profile">HA</button></div>
+  <div class="top-actions"><button class="icon-button" data-action="messages" aria-label="Messages"><svg viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5 8 8 0 0 1-3.4-.8L4 20l1.5-4A7.5 7.5 0 1 1 20 11.5Z"/></svg><i class="unread-dot"></i></button><button class="icon-button" data-action="notifications" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button><button class="icon-button" data-action="theme-settings" aria-label="Appearance settings" title="Appearance settings">☼</button><button class="profile-mini" data-view="profile" aria-label="Open profile">HA</button></div>
 </header>
 <div class="layout">
 <aside class="left-rail">
@@ -31,6 +31,7 @@
     <button class="nav-item" data-view="messages"><span class="nav-ico">▱</span>Messages<span class="nav-count">2</span></button>
     <button class="nav-item" data-view="notifications"><span class="nav-ico">♧</span>Notifications</button>
     <button class="nav-item" data-view="saved"><span class="nav-ico">♧</span>Saved posts</button>
+    <button class="nav-item" data-action="theme-settings"><span class="nav-ico">☼</span>Appearance</button>
   </nav>
   <div class="rail-label communities-label">YOUR CIRCLES <button data-action="circle-create" aria-label="Create a circle">＋</button></div>
   <button class="circle-link" data-action="circle" data-name="Creators Club"><span class="circle-dot dot-lilac">✦</span>Creators Club</button>
@@ -64,6 +65,7 @@
 <div class="toast-region" id="toastRegion" aria-live="polite"></div>
 <dialog id="composerDialog" class="modal"><form method="dialog" id="postForm"><div class="modal-head"><div><span class="eyebrow">YOUR VOICE, YOUR SPACE</span><h2>Create a post</h2></div><button class="close-button" value="cancel" aria-label="Close">×</button></div><div class="post-as"><div class="avatar avatar-you">HA</div><div><strong>Hafizur Ali</strong><small>Sharing with the Earnova community</small></div></div><textarea id="postText" maxlength="1200" placeholder="What's on your mind? Share a win, a lesson, a question, or an opportunity..." required></textarea><div class="composer-tools"><span>✳ Be kind. Share thoughtfully.</span><span id="charCount">0 / 1200</span></div><label class="field-label" for="postTag">Add a topic (optional)</label><select id="postTag"><option value="">Choose a topic</option><option>Career growth</option><option>Learning</option><option>Small wins</option><option>Opportunities</option><option>Creators</option></select><div class="modal-actions"><button type="button" class="secondary-button" data-action="close-composer">Cancel</button><button class="primary-button" id="publishButton" value="publish">Publish post <span>↗</span></button></div><p class="modal-note">Preview mode: your post is saved only in this browser on this device. It isn't published to other users yet.</p></form></dialog>
 <dialog id="genericDialog" class="modal small-modal"><form method="dialog"><div class="modal-head"><div><span class="eyebrow">EARNOVA COMMUNITY</span><h2 id="genericTitle">A little more to explore</h2></div><button class="close-button" value="cancel" aria-label="Close">×</button></div><div id="genericBody" class="generic-body"></div><div class="modal-actions"><button class="primary-button" value="close">Got it</button></div></form></dialog>
+<script src="theme.js" defer></script>
 <script src="app.js" defer></script>
 </body>
 </html>
