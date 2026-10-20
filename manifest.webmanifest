@@ -1,0 +1,17 @@
+{
+  "name": "Earnova Community",
+  "short_name": "Earnova",
+  "description": "A community preview for learning, sharing progress, and discovering opportunities.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f7f2",
+  "theme_color": "#202b20",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
