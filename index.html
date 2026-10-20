@@ -26,6 +26,7 @@
   <nav class="main-nav" aria-label="Main navigation">
     <button class="nav-item active" data-view="home"><span class="nav-ico">⌂</span>Home</button>
     <button class="nav-item" data-view="discover"><span class="nav-ico">⌕</span>Discover<span class="nav-badge">NEW</span></button>
+    <button class="nav-item" data-view="reels"><span class="nav-ico">▷</span>Reels <span class="nav-badge">NEW</span></button>
     <button class="nav-item" data-view="jobs"><span class="nav-ico">▤</span>Jobs & gigs</button>
     <button class="nav-item" data-view="messages"><span class="nav-ico">▱</span>Messages<span class="nav-count">2</span></button>
     <button class="nav-item" data-view="notifications"><span class="nav-ico">♧</span>Notifications</button>
@@ -58,7 +59,7 @@
   </div>
 </main>
 </div>
-<nav class="mobile-nav" aria-label="Mobile navigation"><button class="active" data-view="home"><span>⌂</span>Home</button><button data-view="discover"><span>⌕</span>Discover</button><button class="mobile-create" data-action="create-post" aria-label="Create post">＋</button><button data-view="jobs"><span>▤</span>Jobs</button><button data-view="profile"><span>◉</span>Profile</button></nav>
+<nav class="mobile-nav" aria-label="Mobile navigation"><button class="active" data-view="home"><span>⌂</span>Home</button><button data-view="discover"><span>⌕</span>Discover</button><button data-view="reels"><span>▷</span>Reels</button><button class="mobile-create" data-action="create-post" aria-label="Create post">＋</button><button data-view="jobs"><span>▤</span>Jobs</button><button data-view="profile"><span>◉</span>Profile</button></nav>
 </div>
 <div class="toast-region" id="toastRegion" aria-live="polite"></div>
 <dialog id="composerDialog" class="modal"><form method="dialog" id="postForm"><div class="modal-head"><div><span class="eyebrow">YOUR VOICE, YOUR SPACE</span><h2>Create a post</h2></div><button class="close-button" value="cancel" aria-label="Close">×</button></div><div class="post-as"><div class="avatar avatar-you">HA</div><div><strong>Hafizur Ali</strong><small>Sharing with the Earnova community</small></div></div><textarea id="postText" maxlength="1200" placeholder="What's on your mind? Share a win, a lesson, a question, or an opportunity..." required></textarea><div class="composer-tools"><span>✳ Be kind. Share thoughtfully.</span><span id="charCount">0 / 1200</span></div><label class="field-label" for="postTag">Add a topic (optional)</label><select id="postTag"><option value="">Choose a topic</option><option>Career growth</option><option>Learning</option><option>Small wins</option><option>Opportunities</option><option>Creators</option></select><div class="modal-actions"><button type="button" class="secondary-button" data-action="close-composer">Cancel</button><button class="primary-button" id="publishButton" value="publish">Publish post <span>↗</span></button></div><p class="modal-note">Preview mode: your post is saved only in this browser on this device. It isn't published to other users yet.</p></form></dialog>
