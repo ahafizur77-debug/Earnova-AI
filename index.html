@@ -2,72 +2,65 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#10151f">
-<meta name="description" content="Earnova AI — explore jobs, build career skills, and discover earning opportunities.">
-<title>Earnova AI — Find your next opportunity</title>
-<style>
-:root{--bg:#0c111b;--panel:#151d2b;--panel2:#1b2637;--text:#f4f7fb;--muted:#a6b3c7;--line:#2b384c;--lime:#c8f169;--cyan:#73e0d0;--violet:#b7a3ff}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#1a2940 0,transparent 42%),var(--bg);color:var(--text);font:16px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}button,input,select{font:inherit}.wrap{width:min(1120px,calc(100% - 36px));margin:auto}.nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-bottom:1px solid #ffffff12}.brand{display:flex;align-items:center;gap:10px;font-weight:850;font-size:1.25rem;letter-spacing:-.04em}.logo{display:grid;place-items:center;width:36px;height:36px;border-radius:12px;background:var(--lime);color:#17210b;font-weight:950}.navlinks{display:flex;gap:25px;color:var(--muted);font-size:.92rem}.navlinks a:hover{color:var(--text)}.pill{border:1px solid var(--line);border-radius:999px;padding:8px 14px;color:var(--text);font-size:.9rem}.hero{padding:76px 0 56px;display:grid;grid-template-columns:1.15fr .85fr;gap:42px;align-items:center}.eyebrow{color:var(--lime);font-size:.78rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.hero h1{font-size:clamp(2.8rem,6vw,5rem);line-height:1.02;letter-spacing:-.065em;margin:17px 0 22px}.hero h1 span{color:var(--lime)}.lead{color:var(--muted);font-size:1.1rem;max-width:610px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{border:0;border-radius:12px;padding:13px 18px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}.primary{background:var(--lime);color:#15200b}.secondary{background:#ffffff08;border:1px solid var(--line);color:var(--text)}.btn:hover{filter:brightness(1.07);transform:translateY(-1px)}.hero-card{background:linear-gradient(150deg,#1d2b40,#131b29);border:1px solid #34445c;border-radius:26px;padding:24px;box-shadow:0 28px 80px #0003}.cardtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.status{font-size:.75rem;color:var(--lime);background:#c8f16916;border:1px solid #c8f16938;border-radius:99px;padding:5px 9px}.opportunity{padding:15px 0;border-top:1px solid var(--line);display:flex;gap:13px;align-items:center}.opicon{width:42px;height:42px;border-radius:13px;background:#ffffff0c;display:grid;place-items:center;font-size:1.25rem}.opportunity strong{display:block}.opportunity small{color:var(--muted)}.tag{margin-left:auto;color:var(--cyan);font-size:.78rem;white-space:nowrap}.section{padding:44px 0}.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:22px}.section h2{font-size:clamp(1.7rem,3vw,2.4rem);letter-spacing:-.045em;line-height:1.1;margin:8px 0}.sub{color:var(--muted);margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.feature,.job,.agent{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:21px}.feature .symbol{font-size:1.5rem}.feature h3,.job h3,.agent h3{margin:12px 0 6px}.feature p,.job p,.agent p{color:var(--muted);font-size:.92rem;margin:0}.searchbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.searchbar input,.searchbar select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:160px;flex:1}.joblist{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.jobtop{display:flex;justify-content:space-between;gap:12px}.type{font-size:.75rem;background:#73e0d01a;color:var(--cyan);border-radius:99px;padding:5px 9px;height:max-content}.jobmeta{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:.84rem;margin:14px 0}.demo{font-size:.75rem;color:#ffd48a;background:#ffd48a12;border:1px solid #ffd48a33;border-radius:9px;padding:8px 10px;margin-top:18px}.agents{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.agent{padding:17px}.agent .symbol{font-size:1.3rem}.agent h3{font-size:1rem;margin-top:8px}.cta{padding:34px;border:1px solid #5b6947;border-radius:24px;background:linear-gradient(120deg,#1b2a20,#172033);display:flex;align-items:center;justify-content:space-between;gap:20px}.cta h2{margin:0 0 8px}.cta p{margin:0;color:var(--muted)}footer{padding:30px 0 44px;color:var(--muted);font-size:.85rem}.foot{display:flex;justify-content:space-between;gap:20px;border-top:1px solid var(--line);padding-top:22px}.notice{color:var(--muted);font-size:.82rem;max-width:760px}.empty{color:var(--muted);padding:22px;border:1px dashed var(--line);border-radius:14px;grid-column:1/-1}
-@media(max-width:800px){.hero{grid-template-columns:1fr;padding-top:48px}.hero-card{max-width:560px}.grid{grid-template-columns:1fr}.agents{grid-template-columns:repeat(2,1fr)}.navlinks{display:none}.joblist{grid-template-columns:1fr}.sectionhead{align-items:start;flex-direction:column}.cta{align-items:start;flex-direction:column}}@media(max-width:420px){.wrap{width:min(100% - 24px,1120px)}.agents{grid-template-columns:1fr 1fr}.hero h1{font-size:2.8rem}.cta{padding:24px}}
-</style>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101510">
+<meta name="description" content="Earnova — a community for people building skills, finding work, sharing progress and growing together.">
+<title>Earnova — Grow together</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="wrap nav">
-<a class="brand" href="#"><span class="logo">E</span> Earnova <span style="color:var(--lime)">AI</span></a>
-<nav class="navlinks" aria-label="Main navigation"><a href="#features">Explore</a><a href="#jobs">Jobs</a><a href="#agents">AI tools</a><a href="#about">About</a></nav>
-<a class="pill" href="#jobs">Explore opportunities ↗</a>
+<div class="app-shell">
+<header class="topbar">
+  <a class="brand" href="#" data-view="home" aria-label="Earnova home"><span class="brand-mark">e<span>✳</span></span><span>earnova</span></a>
+  <label class="top-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.2 4.2"/></svg><input id="globalSearch" placeholder="Search people, skills, posts..." autocomplete="off"><kbd>⌘ K</kbd></label>
+  <div class="top-actions"><button class="icon-button" data-action="messages" aria-label="Messages"><svg viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5 8 8 0 0 1-3.4-.8L4 20l1.5-4A7.5 7.5 0 1 1 20 11.5Z"/></svg><i class="unread-dot"></i></button><button class="icon-button" data-action="notifications" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button><button class="profile-mini" data-view="profile" aria-label="Open profile">HA</button></div>
 </header>
-<main>
-<section class="wrap hero">
-<div><div class="eyebrow">Your next chapter starts here</div><h1>Skills to work.<br><span>Work to growth.</span></h1><p class="lead">A smarter starting point for job discovery, resume preparation, career guidance, and earning opportunities — designed to help you move forward.</p><div class="actions"><a class="btn primary" href="#jobs">Explore opportunities <span>→</span></a><a class="btn secondary" href="#features">Discover Earnova</a></div><p class="notice" style="margin-top:18px">Early preview · Job cards are sample listings, not verified live vacancies.</p></div>
-<div class="hero-card"><div class="cardtop"><div><div class="eyebrow">Opportunity board</div><strong style="font-size:1.25rem">Make your next move</strong></div><span class="status">Preview</span></div>
-<div class="opportunity"><div class="opicon">🧭</div><div><strong>Career guidance</strong><small>Find a direction that fits you</small></div><span class="tag">Explore</span></div>
-<div class="opportunity"><div class="opicon">📄</div><div><strong>Resume readiness</strong><small>Present your strengths clearly</small></div><span class="tag">Build</span></div>
-<div class="opportunity"><div class="opicon">💼</div><div><strong>Job discovery</strong><small>Browse roles by skill and location</small></div><span class="tag">Search</span></div>
-<div class="opportunity"><div class="opicon">🛡️</div><div><strong>Safer opportunities</strong><small>Learn warning signs of job scams</small></div><span class="tag">Learn</span></div>
-</div>
-</section>
-<section class="wrap section" id="features"><div class="sectionhead"><div><div class="eyebrow">Built around your goals</div><h2>One place to take the next step</h2><p class="sub">A practical foundation for workers, job seekers, and employers.</p></div></div>
-<div class="grid">
-<article class="feature"><div class="symbol">🔎</div><h3>Find opportunities</h3><p>Explore job categories and learn what to check before applying.</p></article>
-<article class="feature"><div class="symbol">📝</div><h3>Improve your profile</h3><p>Prepare resume content, highlight skills, and plan your next career move.</p></article>
-<article class="feature"><div class="symbol">🧠</div><h3>Career learning</h3><p>Get structured guidance for interview preparation and skill development.</p></article>
-<article class="feature"><div class="symbol">🏢</div><h3>Employer tools</h3><p>A future-ready place for employers to describe roles and hiring needs.</p></article>
-<article class="feature"><div class="symbol">🌐</div><h3>Built for more people</h3><p>Designed with room for multilingual guidance and international opportunities.</p></article>
-<article class="feature"><div class="symbol">🛡️</div><h3>Safety first</h3><p>Never pay a recruiter to get a job; verify employers and offers independently.</p></article>
-</div></section>
-<section class="wrap section" id="jobs"><div class="sectionhead"><div><div class="eyebrow">Opportunity explorer</div><h2>Sample job cards</h2><p class="sub">Use the filters to explore the interface. These are illustrative examples only.</p></div></div>
-<div class="searchbar"><input id="search" type="search" placeholder="Search role or skill" aria-label="Search role or skill"><select id="location" aria-label="Filter by location"><option value="">All locations</option><option>Hyderabad</option><option>Remote</option><option>Assam</option></select><select id="category" aria-label="Filter by category"><option value="">All categories</option><option>Manufacturing</option><option>Technology</option><option>Customer Support</option></select></div>
-<div id="joblist" class="joblist" aria-live="polite"></div>
-<div class="demo">⚠️ Demo content only: no employer has verified these example roles. No applications are submitted from this preview.</div>
-</section>
-<section class="wrap section" id="agents"><div class="sectionhead"><div><div class="eyebrow">AI assistant roadmap</div><h2>Specialist tools, one clear experience</h2><p class="sub">These are planned modules; AI integrations are not active in this static preview.</p></div></div>
-<div class="agents">
-<article class="agent"><div class="symbol">🎯</div><h3>Core Orchestrator</h3><p>Guide requests to the right tool.</p></article>
-<article class="agent"><div class="symbol">🧑‍🏫</div><h3>Mentor</h3><p>Learning and interview preparation.</p></article>
-<article class="agent"><div class="symbol">💼</div><h3>Job Assistant</h3><p>Job search and role matching.</p></article>
-<article class="agent"><div class="symbol">📄</div><h3>Resume Assistant</h3><p>Resume structure and wording.</p></article>
-<article class="agent"><div class="symbol">🧭</div><h3>Career Planner</h3><p>Skills and career next steps.</p></article>
-<article class="agent"><div class="symbol">🛟</div><h3>Support</h3><p>Help centre and issue guidance.</p></article>
-<article class="agent"><div class="symbol">🛡️</div><h3>Safety & Fraud</h3><p>Scam awareness and trust checks.</p></article>
-<article class="agent"><div class="symbol">💰</div><h3>Finance & Rewards</h3><p>Future earning features, subject to verification.</p></article>
-<article class="agent"><div class="symbol">🌍</div><h3>Language</h3><p>Multilingual access roadmap.</p></article>
-<article class="agent"><div class="symbol">✍️</div><h3>Content</h3><p>Career content and learning materials.</p></article>
-<article class="agent"><div class="symbol">📊</div><h3>Admin Analytics</h3><p>Operational insights for administrators.</p></article>
-</div></section>
-<section class="wrap section" id="about"><div class="cta"><div><div class="eyebrow">Earnova AI · Early preview</div><h2>Build a better path forward.</h2><p>Start with skills, verified information, and thoughtful next steps.</p></div><a class="btn primary" href="#jobs">Explore the preview →</a></div><p class="notice" style="margin-top:18px">Earnova AI is an early-stage project. Account creation, real job feeds, AI services, payments, rewards, withdrawals, and employer verification are not implemented on this static page. No income or job placement is guaranteed. Do not share passwords, OTPs, bank PINs, or pay money to an unverified recruiter.</p></section>
+<div class="layout">
+<aside class="left-rail">
+  <div class="rail-label">YOUR SPACE</div>
+  <nav class="main-nav" aria-label="Main navigation">
+    <button class="nav-item active" data-view="home"><span class="nav-ico">⌂</span>Home</button>
+    <button class="nav-item" data-view="discover"><span class="nav-ico">⌕</span>Discover<span class="nav-badge">NEW</span></button>
+    <button class="nav-item" data-view="jobs"><span class="nav-ico">▤</span>Jobs & gigs</button>
+    <button class="nav-item" data-view="messages"><span class="nav-ico">▱</span>Messages<span class="nav-count">2</span></button>
+    <button class="nav-item" data-view="notifications"><span class="nav-ico">♧</span>Notifications</button>
+    <button class="nav-item" data-view="saved"><span class="nav-ico">♧</span>Saved posts</button>
+  </nav>
+  <div class="rail-label communities-label">YOUR CIRCLES <button data-action="circle-create" aria-label="Create a circle">＋</button></div>
+  <button class="circle-link" data-action="circle" data-name="Creators Club"><span class="circle-dot dot-lilac">✦</span>Creators Club</button>
+  <button class="circle-link" data-action="circle" data-name="Career Switchers"><span class="circle-dot dot-orange">↗</span>Career Switchers</button>
+  <button class="circle-link" data-action="circle" data-name="Small Business Hub"><span class="circle-dot dot-green">✳</span>Small Business Hub</button>
+  <button class="circle-link muted-link" data-action="circle-create"><span class="circle-dot">＋</span>Explore circles</button>
+  <div class="rail-promo"><span class="promo-spark">✳</span><strong>Your next chapter<br>starts with a connection.</strong><p>Share what you're learning. Find people moving forward too.</p><button data-action="create-post">Create a post <span>↗</span></button></div>
+  <div class="side-foot"><a href="#about" data-action="about">About</a><a href="#safety" data-action="safety">Safety</a><span>© Earnova 2026</span></div>
+</aside>
+<main class="main-content">
+  <section id="viewHeading" class="view-heading"><div><div class="eyebrow"><span class="live-dot"></span> YOUR COMMUNITY, IN MOTION</div><h1>Good morning, Hafizur <span class="wave">✳</span></h1><p>Little steps add up. What are you working on today?</p></div><button class="primary-button" data-action="create-post"><span>＋</span> Create post</button></section>
+  <section class="stories-section" aria-label="Community stories"><div class="section-top"><h2>Stories <span class="soft-count">from your circle</span></h2><button class="text-button" data-action="all-stories">See all <span>→</span></button></div><div class="stories-row" id="storiesRow"></div></section>
+  <div class="feed-layout">
+   <section class="feed-column">
+    <div class="feed-toolbar"><div class="feed-tabs" role="tablist"><button class="feed-tab selected" data-feed="for-you" role="tab">For you</button><button class="feed-tab" data-feed="following" role="tab">Following</button><button class="feed-tab" data-feed="trending" role="tab">Trending <span class="trend-mark">↗</span></button></div><button class="filter-button" data-action="filters" aria-label="Feed filters">☷ <span>Filter</span></button></div>
+    <div class="composer-card"><div class="avatar avatar-you">HA</div><button class="composer-trigger" data-action="create-post">Share something with your circle, Hafizur...</button><button class="composer-media" data-action="create-post" aria-label="Add media">▧</button></div>
+    <div id="feed" class="feed-list" aria-live="polite"></div>
+    <div id="feedEnd" class="feed-end"><span>✳</span><strong>You're all caught up</strong><p>Keep learning, sharing, and growing together.</p><button class="text-button" data-action="discover">Find new people →</button></div>
+   </section>
+   <aside class="right-column">
+    <section class="widget welcome-widget"><div class="widget-kicker">THE EARNOVA WAY <span>✳</span></div><h3>Progress looks<br>different on everyone.</h3><p>Celebrate the small wins. Ask questions. Pass opportunities along.</p><button data-action="about" class="dark-button">What is Earnova? <span>↗</span></button></section>
+    <section class="widget"><div class="widget-heading"><h3>People to know</h3><button class="text-button" data-action="discover">See all</button></div><div id="suggestions"></div></section>
+    <section class="widget trends-widget"><div class="widget-heading"><h3>What's moving</h3><span class="trend-mark">↗ LIVE PREVIEW</span></div><button class="trend-row" data-action="trend" data-tag="Build in public"><span class="trend-number">01</span><span><strong>#BuildInPublic</strong><small>Creators · 2.4k conversations</small></span><span>↗</span></button><button class="trend-row" data-action="trend" data-tag="Career growth"><span class="trend-number">02</span><span><strong>#CareerGrowth</strong><small>Work & learning · 1.8k</small></span><span>↗</span></button><button class="trend-row" data-action="trend" data-tag="Small wins"><span class="trend-number">03</span><span><strong>#SmallWins</strong><small>Community · 940</small></span><span>↗</span></button><p class="small-note">Trend figures are illustrative preview data.</p></section>
+    <section class="widget safety-widget" id="safety"><div class="safety-icon">✓</div><div><strong>Community safety matters</strong><p>Never pay to get a job. Keep OTPs, passwords, and bank PINs private.</p><button class="text-button" data-action="safety">Safety guide →</button></div></section>
+   </aside>
+  </div>
 </main>
-<footer class="wrap"><div class="foot"><span>© <span id="year"></span> Earnova AI</span><span>Opportunity with clarity.</span></div></footer>
-<script>
-const jobs=[
-{title:"Garment Quality Checker",company:"Example listing · verify employer",location:"Hyderabad",category:"Manufacturing",type:"Illustrative",skills:"quality inspection garment qc"},
-{title:"Junior Web Assistant",company:"Example listing · verify employer",location:"Remote",category:"Technology",type:"Illustrative",skills:"html javascript computer"},
-{title:"Customer Support Trainee",company:"Example listing · verify employer",location:"Assam",category:"Customer Support",type:"Illustrative",skills:"communication support languages"},
-{title:"Production Helper",company:"Example listing · verify employer",location:"Hyderabad",category:"Manufacturing",type:"Illustrative",skills:"factory production teamwork"}
-];
-const list=document.getElementById("joblist");
-function renderJobs(){const q=document.getElementById("search").value.toLowerCase().trim(),loc=document.getElementById("location").value,cat=document.getElementById("category").value;const filtered=jobs.filter(j=>(!q||(j.title+" "+j.company+" "+j.skills).toLowerCase().includes(q))&&(!loc||j.location===loc)&&(!cat||j.category===cat));list.innerHTML=filtered.length?filtered.map(j=>'<article class="job"><div class="jobtop"><div><span class="eyebrow">'+j.category+'</span><h3>'+j.title+'</h3><p>'+j.company+'</p></div><span class="type">'+j.type+'</span></div><div class="jobmeta"><span>📍 '+j.location+'</span><span>🔎 Example only</span></div><p>Sample card to demonstrate browsing. Check real vacancies directly with verified employers.</p></article>').join(""):'<div class="empty">No sample cards match those filters. Try another search.</div>'}
-["search","location","category"].forEach(id=>document.getElementById(id).addEventListener(id==="search"?"input":"change",renderJobs));document.getElementById("year").textContent=new Date().getFullYear();renderJobs();
-</script>
-</body></html>
+</div>
+<nav class="mobile-nav" aria-label="Mobile navigation"><button class="active" data-view="home"><span>⌂</span>Home</button><button data-view="discover"><span>⌕</span>Discover</button><button class="mobile-create" data-action="create-post" aria-label="Create post">＋</button><button data-view="jobs"><span>▤</span>Jobs</button><button data-view="profile"><span>◉</span>Profile</button></nav>
+</div>
+<div class="toast-region" id="toastRegion" aria-live="polite"></div>
+<dialog id="composerDialog" class="modal"><form method="dialog" id="postForm"><div class="modal-head"><div><span class="eyebrow">YOUR VOICE, YOUR SPACE</span><h2>Create a post</h2></div><button class="close-button" value="cancel" aria-label="Close">×</button></div><div class="post-as"><div class="avatar avatar-you">HA</div><div><strong>Hafizur Ali</strong><small>Sharing with the Earnova community</small></div></div><textarea id="postText" maxlength="1200" placeholder="What's on your mind? Share a win, a lesson, a question, or an opportunity..." required></textarea><div class="composer-tools"><span>✳ Be kind. Share thoughtfully.</span><span id="charCount">0 / 1200</span></div><label class="field-label" for="postTag">Add a topic (optional)</label><select id="postTag"><option value="">Choose a topic</option><option>Career growth</option><option>Learning</option><option>Small wins</option><option>Opportunities</option><option>Creators</option></select><div class="modal-actions"><button type="button" class="secondary-button" data-action="close-composer">Cancel</button><button class="primary-button" id="publishButton" value="publish">Publish post <span>↗</span></button></div><p class="modal-note">Preview mode: your post is saved only in this browser on this device. It isn't published to other users yet.</p></form></dialog>
+<dialog id="genericDialog" class="modal small-modal"><form method="dialog"><div class="modal-head"><div><span class="eyebrow">EARNOVA COMMUNITY</span><h2 id="genericTitle">A little more to explore</h2></div><button class="close-button" value="cancel" aria-label="Close">×</button></div><div id="genericBody" class="generic-body"></div><div class="modal-actions"><button class="primary-button" value="close">Got it</button></div></form></dialog>
+<script src="app.js" defer></script>
+</body>
+</html>
