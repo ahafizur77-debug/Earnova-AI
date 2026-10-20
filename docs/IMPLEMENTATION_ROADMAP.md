@@ -76,6 +76,16 @@ The repository currently contains a front-end prototype. Browser-local state is 
 **Dependency note:** true cross-device synchronization cannot be delivered by localStorage alone. It depends on real authentication, a database, and authorized API endpoints; build it alongside the backend foundation.
 
 ### P2 — Real social and Reels backend
+
+### Social schema groundwork (draft only)
+
+- [x] Draft a first PostgreSQL/Supabase migration for posts, follows, reactions, comments, blocks, and user-submitted reports with row-level security and server-side constraints.
+- [x] Add regression checks for key ownership policies, validation limits, and report privacy.
+- [ ] Review policies against the complete block/report and visibility model, then validate the migration against a disposable development database.
+- [ ] Add authenticated API handlers and integration tests before connecting the schema to the UI.
+
+**Status:** The migration is committed only on the `work/social-data-foundation` branch. It has not been applied to any database and does not make the current static preview multi-user. The first draft intentionally limits reports to insert-only for ordinary users and keeps moderation reads/updates behind trusted staff APIs. Block-aware filtering and private/follower-only visibility remain required before launch.
+
 - [ ] Add API-backed profiles, posts, follows, reactions, comments, saves, pagination, and notifications.
 - [ ] Add validated video upload, durable object storage, thumbnails, processing states, and media delivery.
 - [ ] Add block/report workflows, moderation queues, anti-spam rate limits, and copyright complaint handling.
