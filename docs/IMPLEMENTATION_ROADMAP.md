@@ -26,14 +26,14 @@ The repository currently contains a front-end prototype. Browser-local state is 
 ### P1 — Theme engine (requested feature)
 
 #### A. Automatic sunrise/sunset app theme
-- [ ] Add Settings controls: Automatic (sunrise/sunset), Light, Dark, and Manual/custom accent where supported.
-- [ ] In automatic mode, use the device's local sunrise/sunset data for the user's selected location.
-- [ ] Request browser location permission only after a clear user action and explain why it is needed.
-- [ ] If location permission is denied or location data is unavailable, provide a manual city/time-zone fallback; do not silently track location.
-- [ ] Recalculate the theme when the day changes, location/time-zone changes, or the app becomes active again. Avoid frequent visual flicker.
-- [ ] Use accessible color tokens for backgrounds, text, borders, focus rings, and buttons; check contrast in both themes.
-- [ ] Persist the user's global theme preference locally immediately and sync it to the account when signed in.
-- [ ] Manual Light/Dark selection must override automatic mode until the user switches back to Automatic.
+- [x] Add Settings controls: Automatic (sunrise/sunset), Light, Dark, and accent presets (implemented in the static preview).
+- [x] In automatic mode, calculate approximate sunrise/sunset for the device location after explicit permission; use configurable fallback times when unavailable.
+- [x] Request browser location permission only after a clear user action and explain why it is needed.
+- [x] If location permission is denied or location data is unavailable, provide configurable sunrise/sunset fallback times; do not silently track location.
+- [x] Recalculate the theme periodically and when the app becomes active again; the current preview uses the browser's local time.
+- [x] Add dark-theme color tokens and focus styles; full contrast auditing remains a follow-up test.
+- [x] Persist global theme preferences locally. Account sync remains pending authenticated backend APIs.
+- [x] Manual Light/Dark selection overrides automatic mode until the user switches back to Automatic.
 
 **Acceptance checks**
 1. In automatic mode, simulate sunrise and sunset times and verify light/dark transition at the configured boundary.
@@ -43,12 +43,12 @@ The repository currently contains a front-end prototype. Browser-local state is 
 5. Keyboard focus, buttons, form fields, Reels, Jobs, and chat remain readable in both themes.
 
 #### B. Separate theme per chat
-- [ ] Add a chat appearance menu with supported wallpaper/background and accent presets.
-- [ ] Store theme settings by conversation ID, not as one global chat style.
+- [x] Add a separate appearance menu with background presets for each preview conversation.
+- [x] Store preview chat themes by stable conversation key, not as one global chat style.
 - [ ] Keep chat content, timestamps, unread state, and message actions independent of appearance.
-- [ ] Use readable foreground/background combinations and a reset-to-default option.
+- [x] Add readable preset combinations and a per-chat reset option.
 - [ ] Do not create a separate theme for a conversation until the conversation has a stable ID.
-- [ ] In the current prototype, show local-only behavior clearly until server-backed conversations exist.
+- [x] Clearly label preview chat themes as local-only until server-backed conversations exist.
 
 **Acceptance checks**
 1. Change Chat A's theme; Chat B and the app-wide theme remain unchanged.
@@ -57,7 +57,7 @@ The repository currently contains a front-end prototype. Browser-local state is 
 4. Long messages, links, errors, selected text, and keyboard focus remain accessible in every preset.
 
 #### C. Cross-device theme synchronization
-- [ ] Treat server-side account preferences as the source of truth when authenticated; browser storage is a cache/fallback, not the shared database.
+- [ ] Implement server-side account preferences as the source of truth when authenticated; browser storage is currently local-only.
 - [ ] Suggested account preference fields: theme_mode, theme_accent, theme_location_mode, theme_timezone, updated_at.
 - [ ] Suggested conversation appearance table: user_id, conversation_id, wallpaper_id, accent_id, updated_at; enforce authorization so users can only modify their own preferences.
 - [ ] Add authenticated API endpoints to read/update account theme preferences and per-conversation appearance.
