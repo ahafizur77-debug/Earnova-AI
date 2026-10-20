@@ -2,7 +2,7 @@ name: Earnova quality checks
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'work/**']
   pull_request:
     branches: [main]
   workflow_dispatch:
