@@ -25,6 +25,9 @@ Earnova's target is to pair optional AI assistance with a reliable rules/API fal
 - The checks cover source syntax, required UI entry points, theme preference keys, responsive CSS, and PWA manifest metadata. They are smoke checks, not full browser end-to-end tests.
 - The dedicated [docs/SECURITY_TEST_PLAN.md](docs/SECURITY_TEST_PLAN.md) lists required two-user authorization tests and pre-launch security gates. Those tests have not yet been executed against Supabase.
 
+## Organic discovery and retention
+The free-first growth strategy is documented in [docs/ORGANIC_GROWTH_RETENTION_PLAN.md](docs/ORGANIC_GROWTH_RETENTION_PLAN.md). It prioritizes a useful first-session win, optional daily progress, user-controlled reminders, shareable content with consent, honest search/social metadata, and meaningful retention rather than addictive engagement tricks. These are plans; backend-dependent features are not yet live.
+
 ## Demo limitations
 This is a **front-end prototype**, not a production multi-user social network. Sample profiles, job cards, messages, story circles, and trend counts are illustrative. Posts and interactions are stored locally in the current browser where supported; they are not synced to other people or devices. There is no real authentication, server-side database, durable public video upload pipeline, production live messaging, server-side AI integration, payments, moderation dashboard, or verified job feed yet. Do not treat sample vacancies as real opportunities.
 
