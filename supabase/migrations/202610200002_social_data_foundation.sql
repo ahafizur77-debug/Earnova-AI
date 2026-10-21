@@ -78,12 +78,17 @@ stable
 security definer
 set search_path = public, pg_temp
 as $
-  select exists (
-    select 1
-    from public.user_blocks b
-    where (b.blocker_id = p_user_a and b.blocked_id = p_user_b)
-       or (b.blocker_id = p_user_b and b.blocked_id = p_user_a)
-  );
+  select case
+    when (select auth.uid()) is null
+      or ((select auth.uid()) <> p_user_a and (select auth.uid()) <> p_user_b)
+    then false
+    else exists (
+      select 1
+      from public.user_blocks b
+      where (b.blocker_id = p_user_a and b.blocked_id = p_user_b)
+         or (b.blocker_id = p_user_b and b.blocked_id = p_user_a)
+    )
+  end;
 $;
 
 revoke all on function public.earnova_users_block_each_other(uuid, uuid) from public;
