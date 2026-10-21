@@ -60,3 +60,40 @@ test('admin security foundation denies client-side role grants', () => {
   assert.ok(doc.includes('No public admin signup'), 'Admin bootstrap restrictions must be documented');
   assert.ok(doc.includes('Secrets never live in Git'), 'Secret handling rules must be documented');
 });
+
+test('social schema has constrained data, ownership policies, and report privacy', () => {
+  const sql = read('supabase/migrations/202610200002_social_data_foundation.sql');
+  for (const marker of [
+    'create table if not exists public.posts',
+    'create table if not exists public.follows',
+    'create table if not exists public.post_reactions',
+    'create table if not exists public.post_comments',
+    'create table if not exists public.user_blocks',
+    'create table if not exists public.content_reports',
+    'alter table public.posts enable row level security',
+    'posts_insert_own',
+    'follows_insert_self',
+    'reactions_insert_self',
+    'comments_insert_self',
+    'blocks_insert_self',
+    'reports_insert_self',
+    'constraint follows_no_self_follow',
+    'constraint user_blocks_no_self_block',
+    'No client SELECT/UPDATE/DELETE policies'
+  ]) assert.ok(sql.includes(marker), 'Missing social security requirement: ' + marker);
+  assert.ok(!/create policy[^;]+on public\\.content_reports for (select|update|delete)/is.test(sql),
+    'Client users must not browse or alter moderation reports');
+  assert.ok(sql.includes('char_length(body) <= 5000'), 'Post body must have a server-side length limit');
+  assert.ok(sql.includes('char_length(trim(body)) between 1 and 2000'), 'Comment body must be validated');
+  assert.ok(sql.includes('public.earnova_users_block_each_other'), 'Block checks must use the RLS-safe helper');
+  assert.ok(sql.includes('security definer'), 'The block helper must be able to check both directions despite row-level policies');
+  assert.ok(sql.includes('set search_path = public, pg_temp'), 'The security-definer helper must pin its search path');
+  assert.ok(sql.includes('as $$\\n  select case') || sql.includes('as $$\n  select case'), 'The SQL function body must use valid double-dollar quoting');
+  assert.ok(sql.includes('\\n$$;') || sql.includes('\n$$;'), 'The SQL function body must close its double-dollar quote');
+  assert.ok(sql.includes('((select auth.uid()) <> p_user_a and (select auth.uid()) <> p_user_b)'), 'Block helper must not disclose block status for unrelated users');
+  assert.ok(sql.includes('revoke all on function public.earnova_users_block_each_other(uuid, uuid) from public'), 'Block helper execution must not be public');
+  assert.ok(sql.includes('grant execute on function public.earnova_users_block_each_other(uuid, uuid) to authenticated'), 'Only authenticated users should call the block helper');
+  assert.ok(sql.includes('not public.earnova_users_block_each_other((select auth.uid()), posts.author_id)'), 'Post reads must account for blocks');
+  assert.ok(sql.includes('post_reactions.user_id'), 'Reaction reads must account for blocks');
+  assert.ok(sql.includes('post_comments.author_id'), 'Comment reads must account for blocks');
+});
