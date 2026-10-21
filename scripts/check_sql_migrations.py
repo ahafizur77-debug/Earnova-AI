@@ -35,12 +35,31 @@ if all(path.is_file() for path in MIGRATIONS):
     profile_table = re.search(r"create\s+table\s+if\s+not\s+exists\s+public\.profiles\s*\((.*?)\n\);", core, re.I | re.S)
     require(profile_table is not None, "public profiles table declaration exists")
     if profile_table:
-        forbidden_profile_fields = ("email", "phone", "date_of_birth", "location", "password", "payment", "identity_document", "private_notes")
         fields = profile_table.group(1).lower()
+        declared_columns = {
+            match.group(1)
+            for line in fields.splitlines()
+            if (match := re.match(r"\\s*([a-z_][a-z0-9_]*)\\s+", line))
+        }
+        allowed_public_columns = {"id", "display_name", "avatar_url", "created_at", "updated_at"}
         require(
-            not any(re.search(rf"\b{re.escape(field)}\b", fields) for field in forbidden_profile_fields),
+            declared_columns == allowed_public_columns,
+            "public profiles schema contains only the approved public columns",
+        )
+        forbidden_profile_fields = ("email", "phone", "date_of_birth", "location", "password", "payment", "identity_document", "private_notes")
+        require(
+            not any(re.search(rf"\\b{re.escape(field)}\\b", fields) for field in forbidden_profile_fields),
             "public profiles schema contains no known private account fields",
         )
+    profile_policy = re.search(
+        r"create\\s+policy\\s+profiles_select_authenticated\\s+on\\s+public\\.profiles\\s+for\\s+select\\s+to\\s+authenticated\\s+using\\s*\\(\\s*true\\s*\\)",
+        core,
+        re.I,
+    )
+    require(
+        profile_policy is not None,
+        "public profile read policy is explicit and authenticated-only",
+    )
     privacy_doc = ROOT / "docs/PROFILE_PRIVACY_MODEL.md"
     require(privacy_doc.is_file(), "profile privacy model documented")
 
