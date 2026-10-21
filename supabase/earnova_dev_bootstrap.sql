@@ -5,7 +5,10 @@
 -- Keep all service-role/secret keys and database passwords out of browser code and Git.
 -- Source migrations are concatenated below in the required order.
 
-\n-- ===== SOURCE supabase/migrations/202610200001_core_security.sql =====\n\n-- Earnova AI core security foundation (Supabase/PostgreSQL)
+
+-- ===== SOURCE supabase/migrations/202610200001_core_security.sql =====
+
+-- Earnova AI core security foundation (Supabase/PostgreSQL)
 -- Apply only to a fresh/compatible Supabase project after reviewing the migration.
 -- Never put the service-role key in browser code or commit it to Git.
 
@@ -71,7 +74,11 @@ create policy admin_audit_select_admin on public.admin_audit_log for select to a
 -- Client writes to the audit log are intentionally disabled; trusted server-side code writes events.
 
 comment on table public.user_roles is 'Privileged roles. Never allow end users to self-assign roles; grant only through trusted server-side operations.';
-comment on table public.admin_audit_log is 'Administrative audit trail. Writes should be performed by trusted server-side operations.';\n\n-- ===== SOURCE supabase/migrations/202610200002_social_data_foundation.sql =====\n\n-- Earnova AI social-data foundation (Supabase/PostgreSQL).
+comment on table public.admin_audit_log is 'Administrative audit trail. Writes should be performed by trusted server-side operations.';
+
+-- ===== SOURCE supabase/migrations/202610200002_social_data_foundation.sql =====
+
+-- Earnova AI social-data foundation (Supabase/PostgreSQL).
 -- Review and apply only to a dedicated development Supabase project.
 -- This migration is intentionally NOT applied to any live database.
 -- Provider/service-role secrets must never be placed in browser code or Git.
@@ -270,7 +277,11 @@ create policy blocks_delete_self on public.user_blocks
 drop policy if exists reports_insert_self on public.content_reports;
 create policy reports_insert_self on public.content_reports
   for insert to authenticated with check (reporter_id = (select auth.uid()));
--- No client SELECT/UPDATE/DELETE policies: moderation access belongs to trusted staff APIs.\n\n-- ===== SOURCE supabase/migrations/202610210001_social_rls_hardening.sql =====\n\n-- Earnova AI social RLS hardening.
+-- No client SELECT/UPDATE/DELETE policies: moderation access belongs to trusted staff APIs.
+
+-- ===== SOURCE supabase/migrations/202610210001_social_rls_hardening.sql =====
+
+-- Earnova AI social RLS hardening.
 -- Apply only after migrations 202610200001 and 202610200002 in the dedicated dev project.
 -- This does not connect or deploy the frontend.
 
@@ -369,4 +380,4 @@ create policy comments_update_self on public.post_comments
       where p.id = post_comments.post_id
         and not public.earnova_users_block_each_other((select auth.uid()), p.author_id)
     )
-  );\n
+  );
