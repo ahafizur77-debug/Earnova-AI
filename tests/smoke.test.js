@@ -85,8 +85,12 @@ test('social schema has constrained data, ownership policies, and report privacy
     'Client users must not browse or alter moderation reports');
   assert.ok(sql.includes('char_length(body) <= 5000'), 'Post body must have a server-side length limit');
   assert.ok(sql.includes('char_length(trim(body)) between 1 and 2000'), 'Comment body must be validated');
-  assert.ok(sql.includes('b.blocked_id = posts.author_id'), 'Blocked users must not see each other posts');
-  assert.ok(sql.includes('b.blocked_id = follows.follower_id'), 'Blocked relationships must not leak through follow reads');
+  assert.ok(sql.includes('public.earnova_users_block_each_other'), 'Block checks must use the RLS-safe helper');
+  assert.ok(sql.includes('security definer'), 'The block helper must be able to check both directions despite row-level policies');
+  assert.ok(sql.includes('set search_path = public, pg_temp'), 'The security-definer helper must pin its search path');
+  assert.ok(sql.includes('revoke all on function public.earnova_users_block_each_other(uuid, uuid) from public'), 'Block helper execution must not be public');
+  assert.ok(sql.includes('grant execute on function public.earnova_users_block_each_other(uuid, uuid) to authenticated'), 'Only authenticated users should call the block helper');
+  assert.ok(sql.includes('not public.earnova_users_block_each_other((select auth.uid()), posts.author_id)'), 'Post reads must account for blocks');
   assert.ok(sql.includes('post_reactions.user_id'), 'Reaction reads must account for blocks');
   assert.ok(sql.includes('post_comments.author_id'), 'Comment reads must account for blocks');
 });
