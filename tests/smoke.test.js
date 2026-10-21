@@ -88,6 +88,8 @@ test('social schema has constrained data, ownership policies, and report privacy
   assert.ok(sql.includes('public.earnova_users_block_each_other'), 'Block checks must use the RLS-safe helper');
   assert.ok(sql.includes('security definer'), 'The block helper must be able to check both directions despite row-level policies');
   assert.ok(sql.includes('set search_path = public, pg_temp'), 'The security-definer helper must pin its search path');
+  assert.ok(sql.includes('as $\\n  select exists') || sql.includes('as $\n  select exists'), 'The SQL function body must use valid dollar quoting');
+  assert.ok(sql.includes('\\n$;') || sql.includes('\n$;'), 'The SQL function body must close its dollar quote');
   assert.ok(sql.includes('revoke all on function public.earnova_users_block_each_other(uuid, uuid) from public'), 'Block helper execution must not be public');
   assert.ok(sql.includes('grant execute on function public.earnova_users_block_each_other(uuid, uuid) to authenticated'), 'Only authenticated users should call the block helper');
   assert.ok(sql.includes('not public.earnova_users_block_each_other((select auth.uid()), posts.author_id)'), 'Post reads must account for blocks');
