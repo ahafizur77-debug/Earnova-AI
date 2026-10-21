@@ -77,7 +77,7 @@ language sql
 stable
 security definer
 set search_path = public, pg_temp
-as $
+as $$
   select case
     when (select auth.uid()) is null
       or ((select auth.uid()) <> p_user_a and (select auth.uid()) <> p_user_b)
@@ -89,7 +89,7 @@ as $
          or (b.blocker_id = p_user_b and b.blocked_id = p_user_a)
     )
   end;
-$;
+$$;
 
 revoke all on function public.earnova_users_block_each_other(uuid, uuid) from public;
 grant execute on function public.earnova_users_block_each_other(uuid, uuid) to authenticated;
