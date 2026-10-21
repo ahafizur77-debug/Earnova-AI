@@ -68,6 +68,27 @@ create index if not exists comments_post_created_idx on public.post_comments (po
 create index if not exists blocks_blocked_idx on public.user_blocks (blocked_id);
 create index if not exists reports_status_created_idx on public.content_reports (status, created_at);
 
+-- RLS policies need to check blocks in both directions. This narrowly scoped
+-- SECURITY DEFINER helper avoids the caller's own-row-only RLS on user_blocks
+-- hiding reverse blocks during policy evaluation. It returns only a boolean.
+create or replace function public.earnova_users_block_each_other(p_user_a uuid, p_user_b uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public, pg_temp
+as $
+  select exists (
+    select 1
+    from public.user_blocks b
+    where (b.blocker_id = p_user_a and b.blocked_id = p_user_b)
+       or (b.blocker_id = p_user_b and b.blocked_id = p_user_a)
+  );
+$;
+
+revoke all on function public.earnova_users_block_each_other(uuid, uuid) from public;
+grant execute on function public.earnova_users_block_each_other(uuid, uuid) to authenticated;
+
 alter table public.posts enable row level security;
 alter table public.follows enable row level security;
 alter table public.post_reactions enable row level security;
@@ -81,11 +102,7 @@ alter table public.content_reports enable row level security;
 drop policy if exists posts_select_authenticated on public.posts;
 create policy posts_select_authenticated on public.posts
   for select to authenticated using (
-    not exists (
-      select 1 from public.user_blocks b
-      where (b.blocker_id = (select auth.uid()) and b.blocked_id = posts.author_id)
-         or (b.blocker_id = posts.author_id and b.blocked_id = (select auth.uid()))
-    )
+    not public.earnova_users_block_each_other((select auth.uid()), posts.author_id)
   );
 drop policy if exists posts_insert_own on public.posts;
 create policy posts_insert_own on public.posts
@@ -101,13 +118,8 @@ create policy posts_delete_own on public.posts
 drop policy if exists follows_read_authenticated on public.follows;
 create policy follows_read_authenticated on public.follows
   for select to authenticated using (
-    not exists (
-      select 1 from public.user_blocks b
-      where (b.blocker_id = (select auth.uid()) and b.blocked_id = follows.follower_id)
-         or (b.blocker_id = follows.follower_id and b.blocked_id = (select auth.uid()))
-         or (b.blocker_id = (select auth.uid()) and b.blocked_id = follows.followed_id)
-         or (b.blocker_id = follows.followed_id and b.blocked_id = (select auth.uid()))
-    )
+    not public.earnova_users_block_each_other((select auth.uid()), follows.follower_id)
+    and not public.earnova_users_block_each_other((select auth.uid()), follows.followed_id)
   );
 drop policy if exists follows_insert_self on public.follows;
 create policy follows_insert_self on public.follows
@@ -125,16 +137,10 @@ create policy reactions_read_authenticated on public.post_reactions
     )
     and not exists (
       select 1 from public.posts p
-      join public.user_blocks b on
-        (b.blocker_id = (select auth.uid()) and b.blocked_id = p.author_id)
-        or (b.blocker_id = p.author_id and b.blocked_id = (select auth.uid()))
       where p.id = post_reactions.post_id
+        and public.earnova_users_block_each_other((select auth.uid()), p.author_id)
     )
-    and not exists (
-      select 1 from public.user_blocks b
-      where (b.blocker_id = (select auth.uid()) and b.blocked_id = post_reactions.user_id)
-         or (b.blocker_id = post_reactions.user_id and b.blocked_id = (select auth.uid()))
-    )
+    and not public.earnova_users_block_each_other((select auth.uid()), post_reactions.user_id)
   );
 drop policy if exists reactions_insert_self on public.post_reactions;
 create policy reactions_insert_self on public.post_reactions
@@ -156,16 +162,10 @@ create policy comments_read_authenticated on public.post_comments
     )
     and not exists (
       select 1 from public.posts p
-      join public.user_blocks b on
-        (b.blocker_id = (select auth.uid()) and b.blocked_id = p.author_id)
-        or (b.blocker_id = p.author_id and b.blocked_id = (select auth.uid()))
       where p.id = post_comments.post_id
+        and public.earnova_users_block_each_other((select auth.uid()), p.author_id)
     )
-    and not exists (
-      select 1 from public.user_blocks b
-      where (b.blocker_id = (select auth.uid()) and b.blocked_id = post_comments.author_id)
-         or (b.blocker_id = post_comments.author_id and b.blocked_id = (select auth.uid()))
-    )
+    and not public.earnova_users_block_each_other((select auth.uid()), post_comments.author_id)
   );
 drop policy if exists comments_insert_self on public.post_comments;
 create policy comments_insert_self on public.post_comments
