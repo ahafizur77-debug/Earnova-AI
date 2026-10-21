@@ -25,6 +25,9 @@ Earnova's target is to pair optional AI assistance with a reliable rules/API fal
 - The checks cover source syntax, required UI entry points, theme preference keys, responsive CSS, and PWA manifest metadata. They are smoke checks, not full browser end-to-end tests.
 - The dedicated [docs/SECURITY_TEST_PLAN.md](docs/SECURITY_TEST_PLAN.md) lists required two-user authorization tests and pre-launch security gates. Those tests have not yet been executed against Supabase.
 
+## Security and profile privacy
+The public/private profile boundary is documented in [docs/PROFILE_PRIVACY_MODEL.md](docs/PROFILE_PRIVACY_MODEL.md). Keep contact details, identity data, precise location, and other private fields out of the discoverable `profiles` table. The document is a design guardrail; no private-data store or production authentication has been implemented yet.
+
 ## Organic discovery and retention
 The free-first growth strategy is documented in [docs/ORGANIC_GROWTH_RETENTION_PLAN.md](docs/ORGANIC_GROWTH_RETENTION_PLAN.md). It prioritizes a useful first-session win, optional daily progress, user-controlled reminders, shareable content with consent, honest search/social metadata, and meaningful retention rather than addictive engagement tricks. These are plans; backend-dependent features are not yet live.
 
