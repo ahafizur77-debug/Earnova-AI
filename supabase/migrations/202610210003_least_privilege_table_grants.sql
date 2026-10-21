@@ -1,6 +1,7 @@
 -- Apply least-privilege grants for exposed tables. RLS policies remain the row-level gate.
 revoke all privileges on all tables in schema public from public;
 revoke all privileges on all tables in schema public from anon;
+revoke all privileges on all tables in schema public from authenticated;
 
 grant select, insert, update, delete on public.profiles to authenticated;
 grant select on public.user_roles to authenticated;
