@@ -39,7 +39,7 @@ if all(path.is_file() for path in MIGRATIONS):
         declared_columns = {
             match.group(1)
             for line in fields.splitlines()
-            if (match := re.match(r"\\s*([a-z_][a-z0-9_]*)\\s+", line))
+            if (match := re.match(r"\s*([a-z_][a-z0-9_]*)\s+", line))
         }
         allowed_public_columns = {"id", "display_name", "avatar_url", "created_at", "updated_at"}
         require(
@@ -48,11 +48,11 @@ if all(path.is_file() for path in MIGRATIONS):
         )
         forbidden_profile_fields = ("email", "phone", "date_of_birth", "location", "password", "payment", "identity_document", "private_notes")
         require(
-            not any(re.search(rf"\\b{re.escape(field)}\\b", fields) for field in forbidden_profile_fields),
+            not any(re.search(rf"\b{re.escape(field)}\b", fields) for field in forbidden_profile_fields),
             "public profiles schema contains no known private account fields",
         )
     profile_policy = re.search(
-        r"create\\s+policy\\s+profiles_select_authenticated\\s+on\\s+public\\.profiles\\s+for\\s+select\\s+to\\s+authenticated\\s+using\\s*\\(\\s*true\\s*\\)",
+        r"create\s+policy\s+profiles_select_authenticated\s+on\s+public\.profiles\s+for\s+select\s+to\s+authenticated\s+using\s*\(\s*true\s*\)",
         core,
         re.I,
     )
