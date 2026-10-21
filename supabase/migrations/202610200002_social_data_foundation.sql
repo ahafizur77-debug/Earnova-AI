@@ -75,12 +75,18 @@ alter table public.post_comments enable row level security;
 alter table public.user_blocks enable row level security;
 alter table public.content_reports enable row level security;
 
--- Initial beta policy: signed-in users can read public community content.
--- Block-aware feed filtering and private/follower-only visibility must be added
--- before a broad public launch; do not treat this schema alone as launch-ready.
+-- Initial beta policy: signed-in users can read community content only when
+-- neither side has blocked the other. Private/follower-only visibility remains
+-- a separate launch requirement.
 drop policy if exists posts_select_authenticated on public.posts;
 create policy posts_select_authenticated on public.posts
-  for select to authenticated using (true);
+  for select to authenticated using (
+    not exists (
+      select 1 from public.user_blocks b
+      where (b.blocker_id = (select auth.uid()) and b.blocked_id = posts.author_id)
+         or (b.blocker_id = posts.author_id and b.blocked_id = (select auth.uid()))
+    )
+  );
 drop policy if exists posts_insert_own on public.posts;
 create policy posts_insert_own on public.posts
   for insert to authenticated with check (author_id = (select auth.uid()));
@@ -94,7 +100,15 @@ create policy posts_delete_own on public.posts
 
 drop policy if exists follows_read_authenticated on public.follows;
 create policy follows_read_authenticated on public.follows
-  for select to authenticated using (true);
+  for select to authenticated using (
+    not exists (
+      select 1 from public.user_blocks b
+      where (b.blocker_id = (select auth.uid()) and b.blocked_id = follows.follower_id)
+         or (b.blocker_id = follows.follower_id and b.blocked_id = (select auth.uid()))
+         or (b.blocker_id = (select auth.uid()) and b.blocked_id = follows.followed_id)
+         or (b.blocker_id = follows.followed_id and b.blocked_id = (select auth.uid()))
+    )
+  );
 drop policy if exists follows_insert_self on public.follows;
 create policy follows_insert_self on public.follows
   for insert to authenticated with check (follower_id = (select auth.uid()));
@@ -104,7 +118,24 @@ create policy follows_delete_self on public.follows
 
 drop policy if exists reactions_read_authenticated on public.post_reactions;
 create policy reactions_read_authenticated on public.post_reactions
-  for select to authenticated using (true);
+  for select to authenticated using (
+    exists (
+      select 1 from public.posts p
+      where p.id = post_reactions.post_id
+    )
+    and not exists (
+      select 1 from public.posts p
+      join public.user_blocks b on
+        (b.blocker_id = (select auth.uid()) and b.blocked_id = p.author_id)
+        or (b.blocker_id = p.author_id and b.blocked_id = (select auth.uid()))
+      where p.id = post_reactions.post_id
+    )
+    and not exists (
+      select 1 from public.user_blocks b
+      where (b.blocker_id = (select auth.uid()) and b.blocked_id = post_reactions.user_id)
+         or (b.blocker_id = post_reactions.user_id and b.blocked_id = (select auth.uid()))
+    )
+  );
 drop policy if exists reactions_insert_self on public.post_reactions;
 create policy reactions_insert_self on public.post_reactions
   for insert to authenticated with check (user_id = (select auth.uid()));
@@ -118,7 +149,24 @@ create policy reactions_delete_self on public.post_reactions
 
 drop policy if exists comments_read_authenticated on public.post_comments;
 create policy comments_read_authenticated on public.post_comments
-  for select to authenticated using (true);
+  for select to authenticated using (
+    exists (
+      select 1 from public.posts p
+      where p.id = post_comments.post_id
+    )
+    and not exists (
+      select 1 from public.posts p
+      join public.user_blocks b on
+        (b.blocker_id = (select auth.uid()) and b.blocked_id = p.author_id)
+        or (b.blocker_id = p.author_id and b.blocked_id = (select auth.uid()))
+      where p.id = post_comments.post_id
+    )
+    and not exists (
+      select 1 from public.user_blocks b
+      where (b.blocker_id = (select auth.uid()) and b.blocked_id = post_comments.author_id)
+         or (b.blocker_id = post_comments.author_id and b.blocked_id = (select auth.uid()))
+    )
+  );
 drop policy if exists comments_insert_self on public.post_comments;
 create policy comments_insert_self on public.post_comments
   for insert to authenticated with check (author_id = (select auth.uid()));
