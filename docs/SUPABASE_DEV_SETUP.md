@@ -22,6 +22,7 @@ The social schema draft currently lives at:
 
 - `supabase/migrations/202610200001_core_security.sql`
 - `supabase/migrations/202610200002_social_data_foundation.sql`
+- `supabase/migrations/202610210001_social_rls_hardening.sql` (follow-up hardening; apply third)
 
 Before applying anything to a development database:
 
