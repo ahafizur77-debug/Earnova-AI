@@ -32,6 +32,18 @@ for path in MIGRATIONS:
 
 if all(path.is_file() for path in MIGRATIONS):
     core, social, hardening = [p.read_text(encoding="utf-8") for p in MIGRATIONS]
+    profile_table = re.search(r"create\\s+table\\s+if\\s+not\\s+exists\\s+public\\.profiles\\s*\\((.*?)\\n\\);", core, re.I | re.S)
+    require(profile_table is not None, "public profiles table declaration exists")
+    if profile_table:
+        forbidden_profile_fields = ("email", "phone", "date_of_birth", "location", "password", "payment", "identity_document", "private_notes")
+        fields = profile_table.group(1).lower()
+        require(
+            not any(re.search(rf"\\b{re.escape(field)}\\b", fields) for field in forbidden_profile_fields),
+            "public profiles schema contains no known private account fields",
+        )
+    privacy_doc = ROOT / "docs/PROFILE_PRIVACY_MODEL.md"
+    require(privacy_doc.is_file(), "profile privacy model documented")
+
     for table in ("profiles", "user_roles", "admin_audit_log"):
         require(
             re.search(rf"alter\s+table\s+public\.{table}\s+enable\s+row\s+level\s+security", core, re.I) is not None,
