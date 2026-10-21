@@ -85,4 +85,8 @@ test('social schema has constrained data, ownership policies, and report privacy
     'Client users must not browse or alter moderation reports');
   assert.ok(sql.includes('char_length(body) <= 5000'), 'Post body must have a server-side length limit');
   assert.ok(sql.includes('char_length(trim(body)) between 1 and 2000'), 'Comment body must be validated');
+  assert.ok(sql.includes('b.blocked_id = posts.author_id'), 'Blocked users must not see each other posts');
+  assert.ok(sql.includes('b.blocked_id = follows.follower_id'), 'Blocked relationships must not leak through follow reads');
+  assert.ok(sql.includes('post_reactions.user_id'), 'Reaction reads must account for blocks');
+  assert.ok(sql.includes('post_comments.author_id'), 'Comment reads must account for blocks');
 });
