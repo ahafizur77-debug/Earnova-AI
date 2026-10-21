@@ -23,6 +23,7 @@ Earnova's target is to pair optional AI assistance with a reliable rules/API fal
 - Dependency-free regression tests live in [tests/smoke.test.js](tests/smoke.test.js).
 - GitHub Actions workflow at [.github/workflows/quality.yml](.github/workflows/quality.yml) is configured to run them with Node.js 22 on pushes and pull requests.
 - The checks cover source syntax, required UI entry points, theme preference keys, responsive CSS, and PWA manifest metadata. They are smoke checks, not full browser end-to-end tests.
+- The dedicated [docs/SECURITY_TEST_PLAN.md](docs/SECURITY_TEST_PLAN.md) lists required two-user authorization tests and pre-launch security gates. Those tests have not yet been executed against Supabase.
 
 ## Demo limitations
 This is a **front-end prototype**, not a production multi-user social network. Sample profiles, job cards, messages, story circles, and trend counts are illustrative. Posts and interactions are stored locally in the current browser where supported; they are not synced to other people or devices. There is no real authentication, server-side database, durable public video upload pipeline, production live messaging, server-side AI integration, payments, moderation dashboard, or verified job feed yet. Do not treat sample vacancies as real opportunities.
@@ -38,10 +39,10 @@ This is a **front-end prototype**, not a production multi-user social network. S
 8. Add scoped AI agents through server-side endpoints with consent, output validation, rate limits, usage caps, and reliable fallbacks.
 9. Add privacy controls, data export/deletion, security testing, backups, monitoring, localization, and a limited beta.
 
-The full priority-wise plan and testable acceptance criteria are in [docs/IMPLEMENTATION_ROADMAP.md](docs/IMPLEMENTATION_ROADMAP.md). This is a roadmap, not a claim that all production capabilities exist. Keep Earnova AI separate from MoneyMind AI.
+The full priority-wise plan and testable acceptance criteria are in [docs/IMPLEMENTATION_ROADMAP.md](docs/IMPLEMENTATION_ROADMAP.md). The long-term differentiation and staged upgrade plan is in [docs/DIFFERENTIATION_AND_UPGRADE_PLAN.md](docs/DIFFERENTIATION_AND_UPGRADE_PLAN.md). These are roadmaps, not claims that all production capabilities exist. Keep Earnova AI separate from MoneyMind AI.
 
 ## Deploy
-The static preview is deployed separately from MoneyMind AI using Render Static Sites. Root directory is the repository root and publish path is `.`. No build command is required.
+The static preview is deployed separately from MoneyMind AI using Render Static Sites. Root directory is the repository root and publish path is `.`. No build command is required. Do not deploy or publish new changes until the review and authorization gates are satisfied.
 
 ## Long-term evolution
-The proposed differentiation and staged continuous-upgrade backlog is in [docs/DIFFERENTIATION_AND_UPGRADE_PLAN.md](docs/DIFFERENTIATION_AND_UPGRADE_PLAN.md). It is a roadmap, not a claim that those features are already live.
+Earnova aims to combine community, AI-assisted growth, career opportunities, and transparent creator earnings. Competing with or surpassing Instagram/Facebook is an ambition, not a guaranteed outcome.
