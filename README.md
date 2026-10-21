@@ -42,3 +42,6 @@ The full priority-wise plan and testable acceptance criteria are in [docs/IMPLEM
 
 ## Deploy
 The static preview is deployed separately from MoneyMind AI using Render Static Sites. Root directory is the repository root and publish path is `.`. No build command is required.
+
+## Long-term evolution
+The proposed differentiation and staged continuous-upgrade backlog is in [docs/DIFFERENTIATION_AND_UPGRADE_PLAN.md](docs/DIFFERENTIATION_AND_UPGRADE_PLAN.md). It is a roadmap, not a claim that those features are already live.
