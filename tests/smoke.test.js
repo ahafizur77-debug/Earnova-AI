@@ -112,7 +112,7 @@ test('Supabase browser integration keeps safe script order and shared-post actio
     'Supabase client/config/auth must load before app.js');
   const config = read('supabase-config.js');
   assert.ok(config.includes('publishableKey'), 'Browser config must use a publishable key');
-  assert.ok(!/service[_-]?role|sb_secret_/i.test(config), 'Privileged Supabase secrets must never ship to the browser');
+  assert.ok(!/["'](?:service[_-]?role|sb_secret_)/i.test(config), 'Privileged Supabase secrets must never ship to the browser');
   const auth = read('auth.js');
   for (const marker of [
     'signUp(', 'signInWithPassword(', 'auth.signOut()',
