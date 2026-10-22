@@ -57,3 +57,24 @@ Important remaining gaps:
 - No production deployment or public launch has been approved by this document.
 
 Never put a service-role/secret key in the browser, repository, screenshots, or chat. Keep the existing Render preview clearly labelled as a prototype until the gaps above are closed.
+
+
+## Browser auth integration added
+
+The prototype now includes a browser-side Supabase client, email/password sign-in and sign-up, profile upsert, and database-backed post creation/listing/reactions/comments. The browser config contains only the project's **publishable** key. Never replace it with a service-role or secret key.
+
+Before testing on the Render preview:
+1. In Supabase Dashboard, open **Authentication → URL Configuration**.
+2. Set the Site URL to `https://earnova-ai.onrender.com`.
+3. Add `https://earnova-ai.onrender.com/**` to Redirect URLs (and add the exact local development URL only if you use one).
+4. In **Authentication → Providers → Email**, decide whether email confirmation stays enabled. If enabled, test with an email you can access.
+5. Ensure the Render static site is deployed from the branch containing `index.html`, `supabase-config.js`, and `auth.js`; the current live URL may still be serving the main branch until the PR is merged.
+6. Test with two different email accounts: create/confirm/sign in, publish a post, verify it appears for the other account, react/comment, sign out, and confirm unauthenticated writes are rejected.
+7. Check browser console and Supabase Auth/Postgres logs for errors. Do not paste passwords, OTPs, access tokens, or secret keys into chat.
+
+## Remaining release gates
+
+- No real browser-based two-account test has yet been run.
+- Follow suggestions, messaging, jobs, media upload, moderation dashboard, payment, and n8n are still preview/unconnected features.
+- n8n workflows could not be inspected or activated via a direct connection in this session.
+- The UI must continue to be described as a prototype until the tests above pass.
