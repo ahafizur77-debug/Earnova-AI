@@ -17,7 +17,7 @@ test('main HTML keeps core assets and app entry points', () => {
 });
 
 test('browser scripts parse without syntax errors', () => {
-  for (const file of ['app.js', 'theme.js']) {
+  for (const file of ['app.js', 'theme.js', 'auth.js', 'supabase-config.js']) {
     assert.doesNotThrow(() => new vm.Script(read(file), { filename: file }), file + ' must parse');
   }
 });
@@ -96,4 +96,26 @@ test('social schema has constrained data, ownership policies, and report privacy
   assert.ok(sql.includes('not public.earnova_users_block_each_other((select auth.uid()), posts.author_id)'), 'Post reads must account for blocks');
   assert.ok(sql.includes('post_reactions.user_id'), 'Reaction reads must account for blocks');
   assert.ok(sql.includes('post_comments.author_id'), 'Comment reads must account for blocks');
+});
+
+
+test('Supabase browser integration keeps safe script order and shared-post actions', () => {
+  const html = read('index.html');
+  const order = [
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',
+    'src="supabase-config.js"',
+    'src="auth.js"',
+    'src="app.js"'
+  ].map((marker) => html.indexOf(marker));
+  assert.ok(order.every((index) => index >= 0), 'Supabase and app scripts must be loaded');
+  assert.ok(order.every((index, i) => i === 0 || order[i - 1] < index),
+    'Supabase client/config/auth must load before app.js');
+  const config = read('supabase-config.js');
+  assert.ok(config.includes('publishableKey'), 'Browser config must use a publishable key');
+  assert.ok(!/service[_-]?role|sb_secret_/i.test(config), 'Privileged Supabase secrets must never ship to the browser');
+  const auth = read('auth.js');
+  for (const marker of [
+    'signUp(', 'signInWithPassword(', 'auth.signOut()',
+    'publishPost', 'reactToPost', 'addComment', 'earnova:live-posts'
+  ]) assert.ok(auth.includes(marker), 'Missing live auth/backend behavior: ' + marker);
 });
