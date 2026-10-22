@@ -40,7 +40,7 @@ Before applying anything to a development database:
 - Connect the UI only after the backend endpoints and authorization tests pass.
 - Keep deployment, public launch, payments, and production database changes blocked pending explicit approval.
 
-## Current status (verified 2026-10-21)
+## Current status (reviewed 2026-10-22)
 
 The connected development project `ujaxlwtyaopvdekghzgo` is active in `ap-south-1`. The following schema changes were applied directly through the Supabase connection during development:
 - Core security and social data foundation migrations.
@@ -51,8 +51,8 @@ Verification observed 9 public tables with RLS enabled and the Supabase security
 
 Important remaining gaps:
 - No two-account integration tests have been completed.
-- The static Render frontend is not connected to Supabase Auth or the database.
-- No real account signup/login, cross-user post sharing, block behavior, or privacy tests have been completed.
+- The review branch now contains browser-side Supabase Auth and shared post/reaction/comment calls. The public Render URL may still serve `main` until the review branch is approved and deployed.
+- No real account signup/login, cross-user post sharing, block behavior, or privacy tests have been completed. Do not invite real users until these checks pass.
 - The repository migration history and the connected project's applied migration history were created through different paths; reconcile them before using automated migration tooling against this project.
 - No production deployment or public launch has been approved by this document.
 
