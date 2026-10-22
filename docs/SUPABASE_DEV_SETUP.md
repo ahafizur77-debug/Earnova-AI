@@ -22,6 +22,7 @@ The social schema draft currently lives at:
 
 - `supabase/migrations/202610200001_core_security.sql`
 - `supabase/migrations/202610200002_social_data_foundation.sql`
+- `supabase/migrations/202610210001_social_rls_hardening.sql` (follow-up hardening; apply third)
 
 Before applying anything to a development database:
 
@@ -39,6 +40,41 @@ Before applying anything to a development database:
 - Connect the UI only after the backend endpoints and authorization tests pass.
 - Keep deployment, public launch, payments, and production database changes blocked pending explicit approval.
 
-## Current status
+## Current status (reviewed 2026-10-22)
 
-This is documentation only. No Supabase project has been created or configured by this file, no migration has been applied, and no deployment has been triggered.
+The connected development project `ujaxlwtyaopvdekghzgo` is active in `ap-south-1`. The following schema changes were applied directly through the Supabase connection during development:
+- Core security and social data foundation migrations.
+- Social RLS block-check hardening.
+- Internal helper-function restrictions and least-privilege table grants.
+
+Verification observed 9 public tables with RLS enabled and the Supabase security advisor returned no current security lints at the time of the check. This is a structural check only: it does **not** prove all policy behavior is correct.
+
+Important remaining gaps:
+- No two-account integration tests have been completed.
+- The review branch now contains browser-side Supabase Auth and shared post/reaction/comment calls. The public Render URL may still serve `main` until the review branch is approved and deployed.
+- No real account signup/login, cross-user post sharing, block behavior, or privacy tests have been completed. Do not invite real users until these checks pass.
+- The repository migration history and the connected project's applied migration history were created through different paths; reconcile them before using automated migration tooling against this project.
+- No production deployment or public launch has been approved by this document.
+
+Never put a service-role/secret key in the browser, repository, screenshots, or chat. Keep the existing Render preview clearly labelled as a prototype until the gaps above are closed.
+
+
+## Browser auth integration added
+
+The prototype now includes a browser-side Supabase client, email/password sign-in and sign-up, profile upsert, and database-backed post creation/listing/reactions/comments. The browser config contains only the project's **publishable** key. Never replace it with a service-role or secret key.
+
+Before testing on the Render preview:
+1. In Supabase Dashboard, open **Authentication → URL Configuration**.
+2. Set the Site URL to `https://earnova-ai.onrender.com`.
+3. Add `https://earnova-ai.onrender.com/**` to Redirect URLs (and add the exact local development URL only if you use one).
+4. In **Authentication → Providers → Email**, decide whether email confirmation stays enabled. If enabled, test with an email you can access.
+5. Ensure the Render static site is deployed from the branch containing `index.html`, `supabase-config.js`, and `auth.js`; the current live URL may still be serving the main branch until the PR is merged.
+6. Test with two different email accounts: create/confirm/sign in, publish a post, verify it appears for the other account, react/comment, sign out, and confirm unauthenticated writes are rejected.
+7. Check browser console and Supabase Auth/Postgres logs for errors. Do not paste passwords, OTPs, access tokens, or secret keys into chat.
+
+## Remaining release gates
+
+- No real browser-based two-account test has yet been run.
+- Follow suggestions, messaging, jobs, media upload, moderation dashboard, payment, and n8n are still preview/unconnected features.
+- n8n workflows could not be inspected or activated via a direct connection in this session.
+- The UI must continue to be described as a prototype until the tests above pass.

@@ -4,8 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#101510">
-<meta name="description" content="Earnova — a community for people building skills, finding work, sharing progress and growing together.">
-<title>Earnova — Grow together</title>
+<meta name="description" content="Earnova is a mobile-first community concept for sharing progress, building skills, discovering people, and exploring career opportunities.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://earnova-ai.onrender.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Earnova">
+<meta property="og:title" content="Earnova — Grow skills, share progress">
+<meta property="og:description" content="Discover people, build useful skills, share progress, and explore career opportunities with Earnova. Early community preview.">
+<meta property="og:url" content="https://earnova-ai.onrender.com/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Earnova — Grow skills, share progress">
+<meta name="twitter:description" content="Discover people, build useful skills, share progress, and explore career opportunities with Earnova. Early community preview.">
+<title>Earnova — Grow skills, share progress</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -42,12 +52,32 @@
   <div class="side-foot"><a href="#about" data-action="about">About</a><a href="#safety" data-action="safety">Safety</a><span>© Earnova 2026</span></div>
 </aside>
 <main class="main-content">
-  <section id="viewHeading" class="view-heading"><div><div class="eyebrow"><span class="live-dot"></span> YOUR COMMUNITY, IN MOTION</div><h1>Good morning, Hafizur <span class="wave">✳</span></h1><p>Little steps add up. What are you working on today?</p></div><button class="primary-button" data-action="create-post"><span>＋</span> Create post</button></section>
+  <section id="viewHeading" class="view-heading"><div><div class="eyebrow"><span class="live-dot"></span> YOUR COMMUNITY, IN MOTION</div><h1>Welcome to Earnova <span class="wave">✳</span></h1><p>Little steps add up. What are you working on today?</p></div><button class="primary-button" data-action="create-post"><span>＋</span> Create post</button></section>
+  <section id="homeHero" class="home-hero" aria-label="Welcome to Earnova">
+    <div class="hero-copy">
+      <span class="hero-pill"><span class="hero-pill-dot"></span> YOUR NEXT CHAPTER STARTS HERE</span>
+      <h2>Grow your skills.<br><span>Find your people.</span></h2>
+      <p>One place to share what you're learning, discover opportunities, and take your next small step forward.</p>
+      <div class="hero-actions">
+        <button class="hero-primary" data-action="discover">Explore Earnova <span aria-hidden="true">↗</span></button>
+        <button class="hero-secondary" data-action="jobs">Explore jobs & gigs</button>
+      </div>
+      <div class="hero-trust"><span aria-hidden="true">✓</span> Learn at your pace <span class="hero-trust-divider">·</span> <span aria-hidden="true">✓</span> Look out for one another</div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+      <div class="hero-glow"></div>
+      <div class="hero-note note-top"><span class="hero-note-icon note-lime">✳</span><span><strong>Learn something</strong><small>One step at a time</small></span></div>
+      <div class="hero-center-mark"><span>e</span><i>✳</i></div>
+      <div class="hero-note note-bottom"><span class="hero-note-icon note-lilac">↗</span><span><strong>Find an opportunity</strong><small>Build your next chapter</small></span></div>
+      <span class="hero-spark spark-one">✦</span><span class="hero-spark spark-two">✳</span>
+    </div>
+  </section>
   <section class="stories-section" aria-label="Community stories"><div class="section-top"><h2>Stories <span class="soft-count">from your circle</span></h2><button class="text-button" data-action="all-stories">See all <span>→</span></button></div><div class="stories-row" id="storiesRow"></div></section>
   <div class="feed-layout">
    <section class="feed-column">
     <div class="feed-toolbar"><div class="feed-tabs" role="tablist"><button class="feed-tab selected" data-feed="for-you" role="tab">For you</button><button class="feed-tab" data-feed="following" role="tab">Following</button><button class="feed-tab" data-feed="trending" role="tab">Trending <span class="trend-mark">↗</span></button></div><button class="filter-button" data-action="filters" aria-label="Feed filters">☷ <span>Filter</span></button></div>
-    <div class="composer-card"><div class="avatar avatar-you">HA</div><button class="composer-trigger" data-action="create-post">Share something with your circle, Hafizur...</button><button class="composer-media" data-action="create-post" aria-label="Add media">▧</button></div>
+    <div class="composer-card"><div class="avatar avatar-you">HA</div><button class="composer-trigger" data-action="create-post">Share something with your circle...</button><button class="composer-media" data-action="create-post" aria-label="Add media">▧</button></div>
     <div id="feed" class="feed-list" aria-live="polite"></div>
     <div id="feedEnd" class="feed-end"><span>✳</span><strong>You're all caught up</strong><p>Keep learning, sharing, and growing together.</p><button class="text-button" data-action="discover">Find new people →</button></div>
    </section>
@@ -63,8 +93,11 @@
 <nav class="mobile-nav" aria-label="Mobile navigation"><button class="active" data-view="home"><span>⌂</span>Home</button><button data-view="discover"><span>⌕</span>Discover</button><button data-view="reels"><span>▷</span>Reels</button><button class="mobile-create" data-action="create-post" aria-label="Create post">＋</button><button data-view="jobs"><span>▤</span>Jobs</button><button data-view="profile"><span>◉</span>Profile</button></nav>
 </div>
 <div class="toast-region" id="toastRegion" aria-live="polite"></div>
-<dialog id="composerDialog" class="modal"><form method="dialog" id="postForm"><div class="modal-head"><div><span class="eyebrow">YOUR VOICE, YOUR SPACE</span><h2>Create a post</h2></div><button class="close-button" value="cancel" aria-label="Close">×</button></div><div class="post-as"><div class="avatar avatar-you">HA</div><div><strong>Hafizur Ali</strong><small>Sharing with the Earnova community</small></div></div><textarea id="postText" maxlength="1200" placeholder="What's on your mind? Share a win, a lesson, a question, or an opportunity..." required></textarea><div class="composer-tools"><span>✳ Be kind. Share thoughtfully.</span><span id="charCount">0 / 1200</span></div><label class="field-label" for="postTag">Add a topic (optional)</label><select id="postTag"><option value="">Choose a topic</option><option>Career growth</option><option>Learning</option><option>Small wins</option><option>Opportunities</option><option>Creators</option></select><div class="modal-actions"><button type="button" class="secondary-button" data-action="close-composer">Cancel</button><button class="primary-button" id="publishButton" value="publish">Publish post <span>↗</span></button></div><p class="modal-note">Preview mode: your post is saved only in this browser on this device. It isn't published to other users yet.</p></form></dialog>
+<dialog id="composerDialog" class="modal"><form method="dialog" id="postForm"><div class="modal-head"><div><span class="eyebrow">YOUR VOICE, YOUR SPACE</span><h2>Create a post</h2></div><button class="close-button" value="cancel" aria-label="Close">×</button></div><div class="post-as"><div class="avatar avatar-you">HA</div><div><strong>Your profile</strong><small>Sharing with the Earnova community</small></div></div><textarea id="postText" maxlength="1200" placeholder="What's on your mind? Share a win, a lesson, a question, or an opportunity..." required></textarea><div class="composer-tools"><span>✳ Be kind. Share thoughtfully.</span><span id="charCount">0 / 1200</span></div><label class="field-label" for="postTag">Add a topic (optional)</label><select id="postTag"><option value="">Choose a topic</option><option>Career growth</option><option>Learning</option><option>Small wins</option><option>Opportunities</option><option>Creators</option></select><div class="modal-actions"><button type="button" class="secondary-button" data-action="close-composer">Cancel</button><button class="primary-button" id="publishButton" value="publish">Publish post <span>↗</span></button></div><p class="modal-note">Sign in to publish posts to the shared community. Without signing in, preview interactions stay on this device.</p></form></dialog>
 <dialog id="genericDialog" class="modal small-modal"><form method="dialog"><div class="modal-head"><div><span class="eyebrow">EARNOVA COMMUNITY</span><h2 id="genericTitle">A little more to explore</h2></div><button class="close-button" value="cancel" aria-label="Close">×</button></div><div id="genericBody" class="generic-body"></div><div class="modal-actions"><button class="primary-button" value="close">Got it</button></div></form></dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="supabase-config.js" defer></script>
+<script src="auth.js" defer></script>
 <script src="theme.js" defer></script>
 <script src="app.js" defer></script>
 </body>

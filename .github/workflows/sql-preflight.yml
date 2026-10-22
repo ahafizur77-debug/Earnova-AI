@@ -1,0 +1,43 @@
+name: SQL migration preflight
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "supabase/migrations/**"
+      - "tests/jobs-security.test.js"
+      - "supabase/earnova_dev_bootstrap.sql"
+      - "scripts/check_sql_migrations.py"
+      - ".github/workflows/sql-preflight.yml"
+      - "tests/jobs-security.test.js"
+  push:
+    branches:
+      - "security/**"
+    paths:
+      - "supabase/migrations/**"
+      - "supabase/earnova_dev_bootstrap.sql"
+      - "scripts/check_sql_migrations.py"
+      - ".github/workflows/sql-preflight.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  structural-checks:
+    name: Offline SQL structure checks (not a DB test)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run jobs schema security tests
+        run: node --test tests/jobs-security.test.js
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check migration order and security guardrails
+        run: python scripts/check_sql_migrations.py
