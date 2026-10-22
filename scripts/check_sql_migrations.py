@@ -33,7 +33,11 @@ for path in MIGRATIONS:
     require(path.is_file(), f"migration exists: {path.relative_to(ROOT)}")
 
 if all(path.is_file() for path in MIGRATIONS):
-    core, social, hardening = [p.read_text(encoding="utf-8") for p in MIGRATIONS]
+    core, social, hardening = [p.read_text(encoding="utf-8") for p in MIGRATIONS[:3]]
+    indexes, jobs = [p.read_text(encoding="utf-8") for p in MIGRATIONS[3:]]
+    require("create index if not exists post_comments_author_id_idx" in indexes.lower(), "foreign-key index migration includes comments author index")
+    require("alter table public.jobs enable row level security" in jobs.lower(), "jobs migration enables RLS")
+    require("alter table public.companies enable row level security" in jobs.lower(), "companies migration enables RLS")
     profile_table = re.search(r"create\s+table\s+if\s+not\s+exists\s+public\.profiles\s*\((.*?)\n\);", core, re.I | re.S)
     require(profile_table is not None, "public profiles table declaration exists")
     if profile_table:
