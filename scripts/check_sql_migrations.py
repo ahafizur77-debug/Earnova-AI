@@ -14,6 +14,8 @@ MIGRATIONS = [
     ROOT / "supabase/migrations/202610200001_core_security.sql",
     ROOT / "supabase/migrations/202610200002_social_data_foundation.sql",
     ROOT / "supabase/migrations/202610210001_social_rls_hardening.sql",
+    ROOT / "supabase/migrations/202610220001_foreign_key_indexes.sql",
+    ROOT / "supabase/migrations/202610220002_jobs_companies_foundation.sql",
 ]
 BOOTSTRAP = ROOT / "supabase/earnova_dev_bootstrap.sql"
 
