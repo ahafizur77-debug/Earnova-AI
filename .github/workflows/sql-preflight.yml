@@ -5,9 +5,11 @@ on:
   pull_request:
     paths:
       - "supabase/migrations/**"
+      - "tests/jobs-security.test.js"
       - "supabase/earnova_dev_bootstrap.sql"
       - "scripts/check_sql_migrations.py"
       - ".github/workflows/sql-preflight.yml"
+      - "tests/jobs-security.test.js"
   push:
     branches:
       - "security/**"
@@ -27,6 +29,12 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run jobs schema security tests
+        run: node --test tests/jobs-security.test.js
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
