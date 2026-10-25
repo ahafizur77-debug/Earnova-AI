@@ -135,6 +135,21 @@ test('Reels upload uses authenticated Supabase Storage and owner-scoped RLS', ()
   assert.ok(!/service_role|sb_secret_/i.test(app + auth), 'No privileged Supabase key may ship in browser code');
 });
 
+test('direct messaging schema scopes access and private media view limits', () => {
+  const sql = read('supabase/migrations/202610250001_disappearing_direct_messages.sql');
+  for (const marker of [
+    'alter table public.dm_messages enable row level security',
+    'private.is_dm_member(conversation_id)',
+    'create_direct_conversation(target_user uuid)',
+    'consume_disappearing_media(message_uuid uuid)',
+    "bucket_id='earnova-dm-media'",
+    "msg.media_mode='view_once'",
+    "msg.media_mode='view_twice'",
+    'revoke all on function public.touch_dm_conversation_on_message() from public, anon, authenticated'
+  ]) assert.ok(sql.includes(marker), 'Missing DM security control: ' + marker);
+  assert.ok(!sql.includes('public.is_dm_member'), 'Membership helper must not be exposed in the public API schema');
+});
+
 test('direct messaging UI exposes private chat and disappearing-media modes', () => {
   const app = read('app.js');
   const css = read('style.css');
