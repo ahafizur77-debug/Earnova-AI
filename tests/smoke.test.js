@@ -17,7 +17,7 @@ test('main HTML keeps core assets and app entry points', () => {
 });
 
 test('browser scripts parse without syntax errors', () => {
-  for (const file of ['app.js', 'theme.js']) {
+  for (const file of ['app.js', 'theme.js', 'auth.js']) {
     assert.doesNotThrow(() => new vm.Script(read(file), { filename: file }), file + ' must parse');
   }
 });
@@ -96,4 +96,20 @@ test('social schema has constrained data, ownership policies, and report privacy
   assert.ok(sql.includes('not public.earnova_users_block_each_other((select auth.uid()), posts.author_id)'), 'Post reads must account for blocks');
   assert.ok(sql.includes('post_reactions.user_id'), 'Reaction reads must account for blocks');
   assert.ok(sql.includes('post_comments.author_id'), 'Comment reads must account for blocks');
+});
+
+
+test('Supabase account integration uses publishable credentials and shared social APIs', () => {
+  const auth = read('auth.js');
+  assert.ok(auth.includes('sb_publishable_'), 'Frontend must use a publishable key');
+  assert.ok(!auth.includes('service_role'), 'Service-role credentials must never be in frontend code');
+  for (const marker of [
+    'signUp({email,password', 'signInWithPassword({email,password',
+    "from('profiles').upsert", "from('posts').select", "from('posts').insert",
+    "from('post_reactions')", "from('post_comments')", "from('follows')",
+    'stopImmediatePropagation', 'persistSession:true', 'resetPasswordForEmail', 'earnovaPasswordReset'
+  ]) assert.ok(auth.includes(marker), 'Missing account/social integration marker: ' + marker);
+  assert.ok(auth.includes("title.dataset.mode==='account'"), 'Account menu must route its action to sign-out');
+  assert.ok(!auth.includes("$('#earnovaAuthToggle').onclick="), 'Account menu must not register a competing sign-out handler');
+  assert.ok(auth.includes("$('#composerDialog .modal-note')"), 'Shared-feed mode must not show the local-only preview warning');
 });
