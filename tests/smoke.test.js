@@ -134,3 +134,16 @@ test('Reels upload uses authenticated Supabase Storage and owner-scoped RLS', ()
   ]) assert.ok(migration.includes(marker), 'Missing Reels security marker: ' + marker);
   assert.ok(!/service_role|sb_secret_/i.test(app + auth), 'No privileged Supabase key may ship in browser code');
 });
+
+test('direct messaging UI exposes private chat and disappearing-media modes', () => {
+  const app = read('app.js');
+  const css = read('style.css');
+  for (const marker of [
+    'renderDirectMessages()', 'create_direct_conversation', 'dm_conversation_members',
+    'dm_messages', 'consume_disappearing_media', 'view_once', 'view_twice', 'unlimited',
+    'earnova-dm-media', 'dm-view-media'
+  ]) assert.ok(app.includes(marker), 'Missing direct-message behavior: ' + marker);
+  for (const marker of ['dm-shell', 'dm-chat', 'dm-media-content', 'dm-expired']) {
+    assert.ok(css.includes(marker), 'Missing direct-message style: ' + marker);
+  }
+});
