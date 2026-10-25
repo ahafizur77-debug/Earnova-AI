@@ -109,4 +109,7 @@ test('Supabase account integration uses publishable credentials and shared socia
     "from('post_reactions')", "from('post_comments')", "from('follows')",
     'stopImmediatePropagation', 'persistSession:true', 'resetPasswordForEmail', 'earnovaPasswordReset'
   ]) assert.ok(auth.includes(marker), 'Missing account/social integration marker: ' + marker);
+  assert.ok(auth.includes("title.dataset.mode==='account'"), 'Account menu must route its action to sign-out');
+  assert.ok(!auth.includes("$('#earnovaAuthToggle').onclick="), 'Account menu must not register a competing sign-out handler');
+  assert.ok(auth.includes("$('#composerDialog .modal-note')"), 'Shared-feed mode must not show the local-only preview warning');
 });
