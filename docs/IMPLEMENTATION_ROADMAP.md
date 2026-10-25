@@ -8,7 +8,7 @@ Earnova AI aims to combine social posts and short-form video, genuine job and sk
 
 ## Current state and honest limitations
 
-The repository currently contains a front-end prototype. Browser-local state is not multi-user persistence. Sample job listings are illustrative. Real authentication, API-backed multi-device data, durable video storage, production messaging, AI integrations, payment processing, and a verified-job pipeline are not yet implemented. Do not describe a prototype feature as production-ready until its acceptance tests pass.
+The repository currently contains a front-end prototype. Browser-local state is not multi-user persistence. Sample job listings are illustrative. The direct-messaging backend schema has been applied to the connected Supabase project, and its frontend is proposed in [PR #11](https://github.com/ahafizur77-debug/Earnova-AI/pull/11), pending review and automated checks. Two-account browser testing, live messaging verification, abuse controls, and launch acceptance tests remain incomplete. Durable public video processing, AI integrations, payment processing, and a verified-job pipeline are not yet implemented. Do not describe a prototype feature as production-ready until its acceptance tests pass.
 
 ## Priority order
 
