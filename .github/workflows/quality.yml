@@ -21,5 +21,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Check JavaScript syntax
+        run: node --check app.js && node --check theme.js && node --check auth.js
       - name: Run dependency-free smoke tests
         run: node --test tests/smoke.test.js
