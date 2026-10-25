@@ -3,6 +3,10 @@
 -- No service-role key belongs in browser code or Git.
 create extension if not exists pgcrypto;
 
+create schema if not exists private;
+revoke all on schema private from public, anon;
+grant usage on schema private to authenticated;
+
 create table if not exists public.dm_conversations (
   id uuid primary key default gen_random_uuid(),
   created_by uuid not null references auth.users(id) on delete cascade,
@@ -35,6 +39,9 @@ create table if not exists public.dm_message_views (
   last_viewed_at timestamptz,
   primary key (message_id,user_id)
 );
+create index if not exists dm_conversations_created_by_idx on public.dm_conversations(created_by);
+create index if not exists dm_message_views_user_idx on public.dm_message_views(user_id);
+create index if not exists dm_messages_sender_idx on public.dm_messages(sender_id);
 create index if not exists dm_members_user_idx on public.dm_conversation_members(user_id,conversation_id);
 create index if not exists dm_messages_conversation_created_idx on public.dm_messages(conversation_id,created_at);
 alter table public.dm_conversations enable row level security;
@@ -42,30 +49,30 @@ alter table public.dm_conversation_members enable row level security;
 alter table public.dm_messages enable row level security;
 alter table public.dm_message_views enable row level security;
 
-create or replace function public.is_dm_member(conversation_uuid uuid)
+create or replace function private.is_dm_member(conversation_uuid uuid)
 returns boolean language sql stable security definer set search_path = ''
 as $$
  select auth.uid() is not null and exists(select 1 from public.dm_conversation_members m where m.conversation_id=conversation_uuid and m.user_id=auth.uid());
 $$;
-revoke all on function public.is_dm_member(uuid) from public, anon;
-grant execute on function public.is_dm_member(uuid) to authenticated;
+revoke all on function private.is_dm_member(uuid) from public, anon;
+grant execute on function private.is_dm_member(uuid) to authenticated;
 
 drop policy if exists "Members can read their conversations" on public.dm_conversations;
-create policy "Members can read their conversations" on public.dm_conversations for select to authenticated using (public.is_dm_member(id));
+create policy "Members can read their conversations" on public.dm_conversations for select to authenticated using (private.is_dm_member(id));
 drop policy if exists "Authenticated can create their conversations" on public.dm_conversations;
 create policy "Authenticated can create their conversations" on public.dm_conversations for insert to authenticated with check (created_by=(select auth.uid()));
 drop policy if exists "Members can read conversation membership" on public.dm_conversation_members;
-create policy "Members can read conversation membership" on public.dm_conversation_members for select to authenticated using (public.is_dm_member(conversation_id));
+create policy "Members can read conversation membership" on public.dm_conversation_members for select to authenticated using (private.is_dm_member(conversation_id));
 drop policy if exists "Users can join conversations through RPC only" on public.dm_conversation_members;
 create policy "Users can join conversations through RPC only" on public.dm_conversation_members for insert to authenticated with check (user_id=(select auth.uid()) and exists(select 1 from public.dm_conversations c where c.id=conversation_id and c.created_by=(select auth.uid())));
 drop policy if exists "Members can read messages" on public.dm_messages;
-create policy "Members can read messages" on public.dm_messages for select to authenticated using (public.is_dm_member(conversation_id) and (media_mode='unlimited' or media_path is null or expires_at is null or expires_at>now() or sender_id=(select auth.uid())));
+create policy "Members can read messages" on public.dm_messages for select to authenticated using (private.is_dm_member(conversation_id) and (media_mode='unlimited' or media_path is null or expires_at is null or expires_at>now() or sender_id=(select auth.uid())));
 drop policy if exists "Members can send messages as themselves" on public.dm_messages;
-create policy "Members can send messages as themselves" on public.dm_messages for insert to authenticated with check (sender_id=(select auth.uid()) and public.is_dm_member(conversation_id));
+create policy "Members can send messages as themselves" on public.dm_messages for insert to authenticated with check (sender_id=(select auth.uid()) and private.is_dm_member(conversation_id));
 drop policy if exists "Users can read their own media view state" on public.dm_message_views;
 create policy "Users can read their own media view state" on public.dm_message_views for select to authenticated using (user_id=(select auth.uid()));
 drop policy if exists "Users can record their own media views" on public.dm_message_views;
-create policy "Users can record their own media views" on public.dm_message_views for insert to authenticated with check (user_id=(select auth.uid()) and exists(select 1 from public.dm_messages msg where msg.id=message_id and msg.sender_id<>(select auth.uid()) and public.is_dm_member(msg.conversation_id)));
+create policy "Users can record their own media views" on public.dm_message_views for insert to authenticated with check (user_id=(select auth.uid()) and exists(select 1 from public.dm_messages msg where msg.id=message_id and msg.sender_id<>(select auth.uid()) and private.is_dm_member(msg.conversation_id)));
 drop policy if exists "Users can update their own media views" on public.dm_message_views;
 create policy "Users can update their own media views" on public.dm_message_views for update to authenticated using (user_id=(select auth.uid())) with check (user_id=(select auth.uid()) and views_count<=2);
 grant select,insert on public.dm_conversations to authenticated;
@@ -102,7 +109,7 @@ begin
  if caller is null then raise exception 'Sign in required'; end if;
  select * into msg from public.dm_messages where id=message_uuid;
  if not found or msg.media_path is null then raise exception 'Media not found'; end if;
- if not public.is_dm_member(msg.conversation_id) then raise exception 'Not a conversation member'; end if;
+ if not private.is_dm_member(msg.conversation_id) then raise exception 'Not a conversation member'; end if;
  if msg.sender_id=caller or msg.media_mode='unlimited' then return true; end if;
  if msg.expires_at is not null and msg.expires_at<=now() then return false; end if;
  insert into public.dm_message_views(message_id,user_id,views_count,last_viewed_at) values(message_uuid,caller,1,now())
@@ -123,6 +130,7 @@ returns trigger language plpgsql security definer set search_path = ''
 as $$ begin update public.dm_conversations set last_message_at=new.created_at where id=new.conversation_id; return new; end; $$;
 drop trigger if exists dm_message_touch_conversation on public.dm_messages;
 create trigger dm_message_touch_conversation after insert on public.dm_messages for each row execute function public.touch_dm_conversation_on_message();
+revoke all on function public.touch_dm_conversation_on_message() from public, anon, authenticated;
 
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
 values('earnova-dm-media','earnova-dm-media',false,10485760,array['image/jpeg','image/png','image/webp','video/mp4','video/webm','video/quicktime'])
