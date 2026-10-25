@@ -84,7 +84,7 @@ The repository currently contains a front-end prototype. Browser-local state is 
 - [ ] Review policies against the complete block/report and visibility model, then validate the migration against a disposable development database.
 - [ ] Add authenticated API handlers and integration tests before connecting the schema to the UI.
 
-**Status:** The migration is committed only on the `work/social-data-foundation` branch. It has not been applied to any database and does not make the current static preview multi-user. The first draft intentionally limits reports to insert-only for ordinary users and keeps moderation reads/updates behind trusted staff APIs. Block-aware filtering and private/follower-only visibility remain required before launch.
+**Status (2026-10-25):** The connected Supabase project is active and has the core/social migrations applied; all 9 current public tables have row-level security enabled. The `feature/supabase-auth-social-feed` branch adds initial Supabase email/password authentication and database-backed posts, reactions, comments, and follows, with automated syntax/regression checks passing. It is still a draft PR and has not been merged or browser-tested with two separate accounts. Before launch, verify Auth redirect/email settings, test account ownership and cross-user privacy, enable leaked-password protection, and complete block/report and private/follower-only visibility checks. Ordinary users' reports remain insert-only; moderation reads/updates must stay behind trusted staff APIs.
 
 - [ ] Add API-backed profiles, posts, follows, reactions, comments, saves, pagination, and notifications.
 - [ ] Add validated video upload, durable object storage, thumbnails, processing states, and media delivery.
