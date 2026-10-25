@@ -24,8 +24,11 @@ Earnova's target is to pair optional AI assistance with a reliable rules/API fal
 - GitHub Actions workflow at [.github/workflows/quality.yml](.github/workflows/quality.yml) is configured to run them with Node.js 22 on pushes and pull requests.
 - The checks cover source syntax, required UI entry points, theme preference keys, responsive CSS, and PWA manifest metadata. They are smoke checks, not full browser end-to-end tests.
 
-## Demo limitations
-This is a **front-end prototype**, not a production multi-user social network. Sample profiles, job cards, messages, story circles, and trend counts are illustrative. Posts and interactions are stored locally in the current browser where supported; they are not synced to other people or devices. There is no real authentication, server-side database, durable public video upload pipeline, production live messaging, server-side AI integration, payments, moderation dashboard, or verified job feed yet. Do not treat sample vacancies as real opportunities.
+## Current backend integration and demo limitations
+
+This branch adds an initial Supabase email/password sign-up and sign-in flow plus a shared database-backed feed for posts, likes, comments, follows, and deleting one's own posts. The frontend uses only the Supabase publishable key; service-role credentials must never be placed in browser code. This integration is an early foundation and has **not** yet passed browser end-to-end testing with two separate accounts. Before merging or launching, verify the deployed Render URL in Supabase Auth redirect/URL configuration, test email confirmation and recovery flows, and validate cross-account visibility and ownership with separate accounts.
+
+Earnova is still not a production-ready multi-user social network. Sample profiles, story circles, trend counts, and job cards remain illustrative; the signed-out preview stores interactions locally. There is no durable public Reels/video upload pipeline, production live messaging, server-side AI integration, payments, moderation dashboard, or verified job feed yet. Do not treat sample vacancies as real opportunities.
 
 ## Balanced production roadmap
 1. Preserve existing features and establish automated regression checks.
