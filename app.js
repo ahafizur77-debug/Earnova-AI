@@ -147,8 +147,14 @@ async function sendDmMessage(e){
 }
 async function viewDmMedia(button){
  const client=window.earnovaClient;if(!client||!dmCurrentUser)return;button.disabled=true;
- try{const id=button.dataset.messageId,path=button.dataset.mediaPath,mode=button.dataset.mediaMode;const {data:link,error:le}=await client.storage.from('earnova-dm-media').createSignedUrl(path,60);if(le)throw le;const {data:ok,error}=await client.rpc('consume_disappearing_media',{message_uuid:id});if(error)throw error;if(ok===false){toast('This media has already disappeared.');await openDmConversation(activeDmConversation);return}
-  const slot=button.closest('.dm-media-slot'),url=link.signedUrl;if(button.dataset.mediaType==='video')slot.innerHTML='<video controls playsinline class="dm-media-content" src="'+esc(url)+'"></video>';else slot.innerHTML='<img class="dm-media-content" src="'+esc(url)+'" alt="Shared photo">';if(mode!=='unlimited')setTimeout(()=>{if(slot?.isConnected)slot.innerHTML='<span class="dm-expired">This media has disappeared.</span>'},mode==='view_once'?12000:20000);if(mode!=='unlimited')await openDmConversation(activeDmConversation)
+ try{const id=button.dataset.messageId,path=button.dataset.mediaPath,mode=button.dataset.mediaMode;
+  const before=await client.from('dm_message_views').select('views_count').eq('message_id',id).eq('user_id',dmCurrentUser.id).maybeSingle();
+  const prior=before.data?.views_count||0;
+  const {data:link,error:le}=await client.storage.from('earnova-dm-media').createSignedUrl(path,60);if(le)throw le;
+  const {data:ok,error}=await client.rpc('consume_disappearing_media',{message_uuid:id});if(error)throw error;if(ok===false){toast('This media has already disappeared.');const slot=button.closest('.dm-media-slot');if(slot)slot.innerHTML='<span class="dm-expired">This media has disappeared.</span>';return}
+  const slot=button.closest('.dm-media-slot'),url=link.signedUrl;
+  if(button.dataset.mediaType==='video')slot.innerHTML='<video controls playsinline class="dm-media-content" src="'+esc(url)+'"></video>';else slot.innerHTML='<img class="dm-media-content" src="'+esc(url)+'" alt="Shared photo">';
+  if(mode!=='unlimited')setTimeout(()=>{if(!slot?.isConnected)return;if(mode==='view_twice'&&prior===0){slot.innerHTML='<button class="dm-view-media" data-action="dm-view-media" data-message-id="'+esc(id)+'" data-media-path="'+esc(path)+'" data-media-type="'+esc(button.dataset.mediaType)+'" data-media-mode="view_twice">↻ Replay once</button>'}else slot.innerHTML='<span class="dm-expired">This media has disappeared.</span>'},mode==='view_once'?12000:20000);
  }catch(e){console.error(e);toast('Could not open media. It may have expired or access was denied.');button.disabled=false}
 }
 
