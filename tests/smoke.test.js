@@ -113,3 +113,24 @@ test('Supabase account integration uses publishable credentials and shared socia
   assert.ok(!auth.includes("$('#earnovaAuthToggle').onclick="), 'Account menu must not register a competing sign-out handler');
   assert.ok(auth.includes("$('#composerDialog .modal-note')"), 'Shared-feed mode must not show the local-only preview warning');
 });
+
+
+test('Reels upload uses authenticated Supabase Storage and owner-scoped RLS', () => {
+  const app = read('app.js');
+  const auth = read('auth.js');
+  const migration = read('supabase/migrations/20261025113000_reels_storage.sql');
+  for (const marker of [
+    'id="reelCloudFeed"', 'id="reelFile"', 'id="reelPublish"',
+    'async function loadCloudReels()', 'async function uploadCloudReel()',
+    "client.storage.from('earnova-reels').upload", "getPublicUrl(path)",
+    'file.size>50*1024*1024', "if(a==='reel-publish')"
+  ]) assert.ok(app.includes(marker), 'Missing Reels upload marker: ' + marker);
+  assert.ok(auth.includes('window.earnovaClient=client'), 'Reels must reuse the signed-in Supabase client');
+  for (const marker of [
+    "values ('earnova-reels', 'earnova-reels', true",
+    'alter table public.reels enable row level security',
+    'author_id = (select auth.uid())',
+    "(storage.foldername(name))[1] = (select auth.uid())::text"
+  ]) assert.ok(migration.includes(marker), 'Missing Reels security marker: ' + marker);
+  assert.ok(!/service_role|sb_secret_/i.test(app + auth), 'No privileged Supabase key may ship in browser code');
+});
