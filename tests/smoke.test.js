@@ -107,6 +107,6 @@ test('Supabase account integration uses publishable credentials and shared socia
     'signUp({email,password', 'signInWithPassword({email,password',
     "from('profiles').upsert", "from('posts').select", "from('posts').insert",
     "from('post_reactions')", "from('post_comments')", "from('follows')",
-    'stopImmediatePropagation', 'persistSession:true'
+    'stopImmediatePropagation', 'persistSession:true', 'resetPasswordForEmail', 'earnovaPasswordReset'
   ]) assert.ok(auth.includes(marker), 'Missing account/social integration marker: ' + marker);
 });
