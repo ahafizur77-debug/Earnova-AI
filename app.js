@@ -142,7 +142,7 @@ async function sendDmMessage(e){
  button.disabled=true;status.textContent='Sending…';
  try{if(file){const ext=({'image/jpeg':'jpg','image/png':'png','image/webp':'webp','video/mp4':'mp4','video/webm':'webm','video/quicktime':'mov'})[file.type];mediaPath=dmCurrentUser.id+'/'+crypto.randomUUID()+'.'+ext;const u=await client.storage.from('earnova-dm-media').upload(mediaPath,file,{contentType:file.type,upsert:false,cacheControl:'60'});if(u.error)throw u.error}
   const {error}=await client.from('dm_messages').insert({conversation_id:id,sender_id:dmCurrentUser.id,body,media_path:mediaPath,media_type:mediaType,media_mode:file?mode:null});if(error){if(mediaPath)await client.storage.from('earnova-dm-media').remove([mediaPath]);throw error}
-  await client.from('dm_conversations').update({last_message_at:new Date().toISOString()}).eq('id',id);$('#dmBody').value='';$('#dmMediaFile').value='';status.textContent='Message sent.';await openDmConversation(id);await loadDmConversations()
+$('#dmBody').value='';$('#dmMediaFile').value='';status.textContent='Message sent.';await openDmConversation(id);await loadDmConversations()
  }catch(err){console.error(err);status.textContent='Send failed: '+(err?.message||'check permissions')}finally{button.disabled=false}
 }
 async function viewDmMedia(button){
