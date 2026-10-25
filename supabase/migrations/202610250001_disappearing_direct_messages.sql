@@ -66,7 +66,7 @@ create policy "Members can read conversation membership" on public.dm_conversati
 drop policy if exists "Users can join conversations through RPC only" on public.dm_conversation_members;
 create policy "Users can join conversations through RPC only" on public.dm_conversation_members for insert to authenticated with check (user_id=(select auth.uid()) and exists(select 1 from public.dm_conversations c where c.id=conversation_id and c.created_by=(select auth.uid())));
 drop policy if exists "Members can read messages" on public.dm_messages;
-create policy "Members can read messages" on public.dm_messages for select to authenticated using (private.is_dm_member(conversation_id) and (media_mode='unlimited' or media_path is null or expires_at is null or expires_at>now() or sender_id=(select auth.uid())));
+create policy "Members can read messages" on public.dm_messages for select to authenticated using (private.is_dm_member(conversation_id));
 drop policy if exists "Members can send messages as themselves" on public.dm_messages;
 create policy "Members can send messages as themselves" on public.dm_messages for insert to authenticated with check (sender_id=(select auth.uid()) and private.is_dm_member(conversation_id));
 drop policy if exists "Users can read their own media view state" on public.dm_message_views;
